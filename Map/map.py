@@ -67,6 +67,21 @@ class Map:
             plt.annotate(i, (x[i], y[i]))
         plt.show()
 
+    def __iter__(self):
+        """Return self on iterating."""
+        self.num = 0
+        return self
+
+    def __next__(self):
+        """Return a point and move to next."""
+        if self.num < len(self):
+            dummy = self.points[self.num]
+            self.num += 1
+            return dummy
+
+        else:
+            raise StopIteration
+
 
 class Circuit:
     """
@@ -76,6 +91,8 @@ class Circuit:
     ----------
     cycle : tuple
         Indices of all points in the circuit.
+    globalmap : Map
+        The map which the circuit belongs to.
     localmap : Map
         A miniature map containing all points of the circuit.
     journey : list
@@ -95,11 +112,22 @@ class Circuit:
             Map in which the circuit resides.
         """
         self.cycle = cycle
+        self.globalmap = map
         self.localmap = Map([map.points[i] for i in cycle], map.dist_func)
         self.journey = ([(cycle[i], cycle[i+1]) for i in range(len(cycle)-1)]
                         + [(cycle[-1], cycle[0])])
 
     def __len__(self):
         """Return the travelled distance of the circuit journey."""
-        dist = self.localmap.dist
+        dist = self.globalmap.dist
         return sum([dist(a, b) for a, b in self.journey])
+
+    def show2d(self):
+        """Return an indexed 2D visual representation of the circuit."""
+        x = [i[0] for i in self.localmap] + [self.localmap.points[0]]
+        y = [j[1] for j in self.localmap] + [self.localmap.points[1]]
+        plt.scatter(x, y, linewidths=0.1)
+        plt.axis('off')
+        for i in self.cycle:
+            plt.annotate(i, (x[i], y[i]))
+        plt.show()
