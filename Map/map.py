@@ -30,28 +30,28 @@ class Map:
             Default is the Euclidean metric.
         """
         self.points = points
-        self.D = np.array([[self.dist(a, b, dist_func) for b in points]
+        self.dist_func = dist_func
+        self.D = np.array([[self.dist_func(a, b) for b in points]
                            for a in points])
 
-    def dist(self, origin, destination, dist_func):
+    def dist(self, origin_idx, destination_idx):
         """
         Return the distance between two nodes.
 
         Parameters
         ----------
-        origin : tuple
-            Cartesian coordinates of origin point.
-        dest : tuple
-            Cartesian coordinates of destination point.
-        dist_func : function
-            Function computing the distance between two points.
+        origin_idx : int
+            Index of the origin point.
+        dest_idx : int
+            Index of the destination point.
 
         Returns
         -------
         int or float
             Distance between the origin and destination points.
         """
-        return dist_func(origin, destination)
+        return self.dist_func(self.points[origin_idx],
+                              self.points[destination_idx])
 
     def __len__(self):
         """Return the number of points on the map."""
@@ -66,3 +66,40 @@ class Map:
         for i in range(len(self.points)):
             plt.annotate(i, (x[i], y[i]))
         plt.show()
+
+
+class Circuit:
+    """
+    Class implementing closed circuits of points in a map.
+
+    Attributes
+    ----------
+    cycle : tuple
+        Indices of all points in the circuit.
+    localmap : Map
+        A miniature map containing all points of the circuit.
+    journey : list
+        A list of all steps taken in completing the circuit.
+        List elements are 2-tuples.
+    """
+
+    def __init__(self, cycle, map):
+        """
+        Intitialise self with local circuit map and cycle.
+
+        Parameters
+        ----------
+        cycle : tuple
+            Indices of all map points to be visited in order.
+        map : Map
+            Map in which the circuit resides.
+        """
+        self.cycle = cycle
+        self.localmap = Map([map.points[i] for i in cycle], map.dist_func)
+        self.journey = ([(cycle[i], cycle[i+1]) for i in range(len(cycle)-1)]
+                        + [(cycle[-1], cycle[0])])
+
+    def __len__(self):
+        """Return the travelled distance of the circuit journey."""
+        dist = self.localmap.dist
+        return sum([dist(a, b) for a, b in self.journey])
