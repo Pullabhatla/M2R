@@ -1,5 +1,7 @@
 """An implementation of a greedy TSP algorithm."""
 
+from .req import Hamiltonian
+
 
 def greedy(map, start):
     """
@@ -19,6 +21,17 @@ def greedy(map, start):
     """
     tour = [start]
     n = len(map)
+    min_idx = start
 
     while len(tour) < n:
-        pass
+        x = tour[-1]
+
+        for i in range(n):
+            if i in tour:
+                continue
+            elif map.dist(x, i) < map.dist(x, min_idx) or min_idx in tour:
+                min_idx = i
+
+        tour.append(min_idx)
+
+    return Hamiltonian(tuple(tour), map)
