@@ -1,5 +1,6 @@
 """Required objects for the TSP and related problems."""
 
+from itertools import permutations
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import euclidean
@@ -81,6 +82,10 @@ class Map:
 
         else:
             raise StopIteration
+
+    def alltours(self):
+        """Return list of all possible Hamiltonian cycles."""
+        return [Hamiltonian(i, self) for i in permutations(range(len(self)))]
 
 
 class Circuit:
