@@ -133,13 +133,18 @@ class Circuit:
 
     def show2d(self):
         """Return an indexed 2D visual representation of the circuit."""
-        x = [i[0] for i in self.localmap] + [self.localmap.points[0][0]]
-        y = [j[1] for j in self.localmap] + [self.localmap.points[0][1]]
-        plt.plot(x, y, '-o')
-        plt.plot(x[0], y[0], 'r*')
+        x = np.array([i[0] for i in self.localmap]
+                     + [self.localmap.points[0][0]])
+        y = np.array([j[1] for j in self.localmap]
+                     + [self.localmap.points[0][1]])
+        plt.plot(x[0], y[0], 'r*', markersize=12)
+        plt.scatter(x, y, s=50)
+        plt.quiver(x[:-1], y[:-1], x[1:]-x[:-1], y[1:]-y[:-1],
+                   scale_units='xy', angles='xy', scale=1, width=0.007,
+                   color='g')
         plt.axis('off')
-        for i in self.cycle:
-            plt.annotate(i, (x[i], y[i]))
+        for i, j in enumerate(self.cycle):
+            plt.annotate(j, (x[i], y[i]), fontsize=15)
         plt.show()
 
     def __iter__(self):
@@ -184,7 +189,7 @@ class Hamiltonian(Circuit):
         map : Map
             The map which the tour belongs to.
         """
-        if set(tour) == set([i for i in range(len(map))]):
+        if set(tour) != set([i for i in range(len(map))]):
             raise ValueError("Tour is not Hamiltonian.")
 
         super().__init__(tour, map)
