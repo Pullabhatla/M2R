@@ -3,7 +3,7 @@
 from .req import Hamiltonian
 
 
-def greedy(map, start):
+def greedy(map, start=0):
     """
     Make the locally optimal choice at each step.
 
@@ -11,8 +11,9 @@ def greedy(map, start):
     ----------
     map : Map
         The map being investigated.
-    start: int
+    start: int, optional
         Index of the starting node of the tour.
+        Default is zero.
 
     Returns
     -------
@@ -29,7 +30,7 @@ def greedy(map, start):
         for i in range(n):
             if i in tour:
                 continue
-            elif map.dist(x, i) < map.dist(x, min_idx) or min_idx in tour:
+            elif map.D[x, i] < map.D[x, min_idx] or min_idx in tour:
                 min_idx = i
 
         tour.append(min_idx)

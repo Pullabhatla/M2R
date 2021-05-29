@@ -1,2 +1,3 @@
 from .req import Map, Circuit, Hamiltonian # noqa
-from .brute_req import minimal_tour # noqa
+from .brute import minimal_tour # noqa
+from .greedy import greedy # noqa
