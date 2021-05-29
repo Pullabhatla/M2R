@@ -151,3 +151,37 @@ class Circuit:
 
         else:
             raise StopIteration
+
+
+class Hamiltonian(Circuit):
+    """
+    Circuit subclass implementing a complete tour of a map.
+
+    Attributes
+    ----------
+    tour : tuple
+        Points visited in the tour in order.
+    map : Map
+        The map which the tour belongs to.
+    journey : list
+        A list of all steps taken in completing the tour.
+        List elements are 2-tuples.
+    """
+
+    def __init__(self, tour, map):
+        """
+        Verify tour is Hamiltonian then initialise self.
+
+        Parameters
+        ----------
+        tour : tuple
+            Points visited in the tour in order.
+        map : Map
+            The map which the tour belongs to.
+        """
+        if set(tour) == set([i for i in range(len(map))]):
+            raise ValueError("Tour is not Hamiltonian.")
+
+        super().__init__(tour, map)
+        self.tour = tour
+        self.map = map
