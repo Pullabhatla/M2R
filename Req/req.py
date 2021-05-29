@@ -127,6 +127,10 @@ class Circuit:
         dist = self.globalmap.dist
         return sum([dist(a, b) for a, b in self.journey])
 
+    def __lt__(self, other):
+        """Implement an ordering of Circuits."""
+        return self.cost() < other.cost()
+
     def __len__(self):
         """Return the number of points in the circuit."""
         return len(self.cycle)
