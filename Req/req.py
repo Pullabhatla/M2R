@@ -63,6 +63,7 @@ class Map:
         x = [i[0] for i in self.points]
         y = [j[1] for j in self.points]
         plt.scatter(x, y)
+        plt.axis('scaled')
         plt.axis('off')
         for i in range(len(self.points)):
             plt.annotate(i, (x[i], y[i]))
@@ -146,6 +147,7 @@ class Circuit:
         plt.quiver(x[:-1], y[:-1], x[1:]-x[:-1], y[1:]-y[:-1],
                    scale_units='xy', angles='xy', scale=1, width=0.007,
                    color='g')
+        plt.axis('scaled')
         plt.axis('off')
         for i, j in enumerate(self.cycle):
             plt.annotate(j, (x[i], y[i]), fontsize=15)
