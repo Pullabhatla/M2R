@@ -136,3 +136,18 @@ class Circuit:
         for i in self.cycle:
             plt.annotate(i, (x[i], y[i]))
         plt.show()
+
+    def __iter__(self):
+        """Return self on iterating."""
+        self.num = 0
+        return self
+
+    def __next__(self):
+        """Return a point and move to next."""
+        if self.num < len(self):
+            dummy = self.cycle[self.num]
+            self.num += 1
+            return dummy
+
+        else:
+            raise StopIteration
