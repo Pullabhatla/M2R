@@ -117,16 +117,21 @@ class Circuit:
         self.journey = ([(cycle[i], cycle[i+1]) for i in range(len(cycle)-1)]
                         + [(cycle[-1], cycle[0])])
 
-    def __len__(self):
+    def cost(self):
         """Return the travelled distance of the circuit journey."""
         dist = self.globalmap.dist
         return sum([dist(a, b) for a, b in self.journey])
 
+    def __len__(self):
+        """Return the number of points in the circuit."""
+        return len(self.cycle)
+
     def show2d(self):
         """Return an indexed 2D visual representation of the circuit."""
-        x = [i[0] for i in self.localmap] + [self.localmap.points[0]]
-        y = [j[1] for j in self.localmap] + [self.localmap.points[1]]
-        plt.scatter(x, y, linewidths=0.1)
+        x = [i[0] for i in self.localmap] + [self.localmap.points[0][0]]
+        y = [j[1] for j in self.localmap] + [self.localmap.points[0][1]]
+        plt.plot(x, y, '-o')
+        plt.plot(x[0], y[0], 'r*')
         plt.axis('off')
         for i in self.cycle:
             plt.annotate(i, (x[i], y[i]))
