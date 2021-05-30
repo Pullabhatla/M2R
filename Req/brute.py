@@ -14,6 +14,6 @@ def brute_tour(map):
     Hamiltonian
         A tour of minimum cost.
     """
-    ham_cycles = [i for i in map.alltours() if i.tour[0] == 0]
+    ham_cycles = [i for i in map.alltours()]
 
     return min(ham_cycles)

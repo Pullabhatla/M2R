@@ -1,6 +1,7 @@
 """Required objects for the TSP and related problems."""
 
 from itertools import permutations
+from math import perm
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import euclidean
@@ -83,9 +84,11 @@ class Map:
         else:
             raise StopIteration
 
-    def alltours(self):
-        """Return list of all possible Hamiltonian cycles."""
-        return [Hamiltonian(i, self) for i in permutations(range(len(self)))]
+    def alltours(self, start=0):
+        """Return list of all unique Hamiltonian cycles."""
+        n = len(self)
+        perms = permutations([i for i in range(n) if i != start])
+        return [Hamiltonian((start,) + i, self) for i in perms]
 
 
 class Circuit:
@@ -117,14 +120,14 @@ class Circuit:
             Map in which the circuit resides.
         """
         self.cycle = cycle
-        self.globalmap = map
-        self.localmap = Map([map.points[i] for i in cycle], map.dist_func)
+        self.map = map
+        self.points = [map.points[i] for i in cycle]
         self.journey = ([(cycle[i], cycle[i+1]) for i in range(len(cycle)-1)]
                         + [(cycle[-1], cycle[0])])
 
     def cost(self):
         """Return the travelled distance of the circuit journey."""
-        dist = self.globalmap.dist
+        dist = self.map.dist
         return sum([dist(a, b) for a, b in self.journey])
 
     def __lt__(self, other):
@@ -137,10 +140,10 @@ class Circuit:
 
     def show2d(self):
         """Return an indexed 2D visual representation of the circuit."""
-        x = np.array([i[0] for i in self.localmap]
-                     + [self.localmap.points[0][0]])
-        y = np.array([j[1] for j in self.localmap]
-                     + [self.localmap.points[0][1]])
+        x = np.array([i[0] for i in self.points]
+                     + [self.points[0][0]])
+        y = np.array([j[1] for j in self.points]
+                     + [self.points[0][1]])
         plt.plot(x[0], y[0], 'r*', markersize=12)
         plt.scatter(x, y, s=50)
         plt.quiver(x[:-1], y[:-1], x[1:]-x[:-1], y[1:]-y[:-1],
@@ -169,34 +172,20 @@ class Circuit:
 
 
 class Hamiltonian(Circuit):
-    """
-    Circuit subclass implementing a complete tour of a map.
+    """Circuit subclass implementing a complete tour of a map."""
 
-    Attributes
-    ----------
-    tour : tuple
-        Points visited in the tour in order.
-    map : Map
-        The map which the tour belongs to.
-    journey : list
-        A list of all steps taken in completing the tour.
-        List elements are 2-tuples.
-    """
-
-    def __init__(self, tour, map):
+    def __init__(self, cycle, map):
         """
         Verify tour is Hamiltonian then initialise self.
 
         Parameters
         ----------
-        tour : tuple
+        cycle : tuple
             Points visited in the tour in order.
         map : Map
             The map which the tour belongs to.
         """
-        if set(tour) != set([i for i in range(len(map))]):
-            raise ValueError("Tour is not Hamiltonian.")
+        if set(cycle) != set([i for i in range(len(map))]):
+            raise ValueError(f"{cycle} is not Hamiltonian.")
 
-        super().__init__(tour, map)
-        self.tour = tour
-        self.map = map
+        super().__init__(cycle, map)
