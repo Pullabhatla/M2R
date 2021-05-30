@@ -1,3 +1,3 @@
 # M2R
 
-Don't overwrite each other's work!
+A suite of tools to investigate the Travelling Salesman and related problems.
