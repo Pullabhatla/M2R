@@ -1,7 +1,7 @@
 """Required objects for a brute force approach to the TSP."""
 
 
-def minimal_tour(map):
+def brute_tour(map):
     """
     Return a possibly non-unique minimal solution to the TSP by brute-force.
 
@@ -14,6 +14,6 @@ def minimal_tour(map):
     Hamiltonian
         A tour of minimum cost.
     """
-    ham_cycles = map.alltours()
+    ham_cycles = [i for i in map.alltours() if i.tour[0] == 0]
 
     return min(ham_cycles)
