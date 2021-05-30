@@ -36,3 +36,23 @@ def greedy(map, start=0):
         tour.append(min_idx)
 
     return Hamiltonian(tuple(tour), map)
+
+
+def best_greedy(map):
+    """
+    Implement greedy over all starting points and return best greedy tour.
+
+    Parameters
+    ----------
+    map : Map
+        The map being investigated.
+    Returns
+    -------
+    Hamiltonian
+        A sub-optimal tour.
+    """
+    tours = []
+    for i in range(len(map)):
+        tours.append(greedy(map, i))
+
+    return min(tours)
