@@ -43,7 +43,7 @@ class Map:
         ----------
         origin_idx : int
             Index of the origin point.
-        dest_idx : int
+        destination_idx : int
             Index of the destination point.
 
         Returns
@@ -51,8 +51,7 @@ class Map:
         int or float
             Distance between the origin and destination points.
         """
-        return self.dist_func(self.points[origin_idx],
-                              self.points[destination_idx])
+        return self.D[origin_idx, destination_idx]
 
     def __len__(self):
         """Return the number of points on the map."""

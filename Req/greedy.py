@@ -1,9 +1,9 @@
-"""An implementation of a greedy TSP algorithm."""
+"""Implementation of greedy TSP algorithms."""
 
 from .req import Hamiltonian
 
 
-def greedy(map, start=0):
+def nearest_neighbour(map, start=0):
     """
     Make the locally optimal choice at each step.
 
@@ -38,9 +38,9 @@ def greedy(map, start=0):
     return Hamiltonian(tuple(tour), map)
 
 
-def best_greedy(map):
+def best_nn(map):
     """
-    Implement greedy over all starting points and return best greedy tour.
+    Implement nearest_neighbour repeatedly and return best greedy tour.
 
     Parameters
     ----------
@@ -53,6 +53,6 @@ def best_greedy(map):
     """
     tours = []
     for i in range(len(map)):
-        tours.append(greedy(map, i))
+        tours.append(nearest_neighbour(map, i))
 
     return min(tours)
