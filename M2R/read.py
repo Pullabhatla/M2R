@@ -2,6 +2,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
+import numpy.random as nrnd
 
 
 def read_in_csv(filepath):
@@ -113,3 +114,18 @@ class GraphMatrix:
     def graph(self):
         """Return Graph object."""
         return self.G
+
+
+class RandomGraph:
+
+    def __init__(self, max_dist=100, number_of_cities=6):
+        """
+        Generate a random graph object.
+
+        accessed by attribute graph.
+        """
+        A = nrnd.randint(1, max_dist, [number_of_cities, number_of_cities])
+        b = np.array(np.diag(A))
+        M = A - np.diag(b)
+        self.matrix = M
+        self.graph = GraphMatrix(M)  # generates a random graph object
