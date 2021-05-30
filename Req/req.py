@@ -1,7 +1,6 @@
 """Required objects for the TSP and related problems."""
 
 from itertools import permutations
-from math import perm
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import euclidean
