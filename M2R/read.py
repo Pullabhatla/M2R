@@ -93,8 +93,17 @@ class Graph:
             A[u[0]-1, u[1]-1] = d
         return A
 
-    def radius(self, r):
-        """Find cities in the radius r."""
+    def neighbors(self, c):
+        """Find neghbor cities in the radius."""
+        return self.G.neighbors(c)
+
+    def radius(self, c, r):
+        """Find cities at least a distance r from city c."""
+        neighbors = self.neighbors()
+        return [i for i in neighbors if self.edgelabels[f'({c}, {i})'] <= r]
+
+    def speration(self, r):
+        """List of nodes seperated by distance of atmost r."""
         truth_array = (np.array(self.distance) <= r)
         nodes = np.array(self.links)[truth_array]
         return list(nodes)
