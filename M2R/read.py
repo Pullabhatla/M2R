@@ -93,6 +93,12 @@ class Graph:
             A[u[0]-1, u[1]-1] = d
         return A
 
+    def radius(self, r):
+        """Find cities in the radius r."""
+        truth_array = (np.array(self.distance) <= r)
+        nodes = np.array(self.links)[truth_array]
+        return list(nodes)
+
 
 class GraphMatrix:
     """
