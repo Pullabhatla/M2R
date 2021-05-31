@@ -97,8 +97,12 @@ class Graph:
         """Find neghbor cities in the radius."""
         return self.G.neighbors(c)
 
+    def distance_neighbors(self, c):
+        """Distance of neighbors of city c."""
+        return[self.edgelabels[f'({c}, {i})'] for i in self.neighbors()]
+
     def radius(self, c, r):
-        """Find cities at least a distance r from city c."""
+        """Find cities at most a distance r from city c."""
         neighbors = self.neighbors()
         return [i for i in neighbors if self.edgelabels[f'({c}, {i})'] <= r]
 
