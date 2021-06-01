@@ -191,8 +191,6 @@ class Hamiltonian(Circuit):
 
         super().__init__(cycle, map)
 
-# Experimental
-
 
 class System:
     """
@@ -225,7 +223,7 @@ class System:
                 if i == j:
                     i_.append(k)
                     break
-        print(i_)
+
         d = self.map.D
         s = np.array([[d[j][i_[i]] - d[i][i_[i]] for j in range(n)]
                      for i in range(n)])

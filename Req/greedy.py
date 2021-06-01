@@ -1,6 +1,6 @@
 """Implementation of greedy TSP algorithms."""
 
-from .req import Hamiltonian
+from Req import Hamiltonian
 
 
 def nearest_neighbour(map, start=0):
