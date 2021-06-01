@@ -12,9 +12,9 @@ class Map:
 
     Attributes
     ----------
-    points: list
+    points : list
         A list of n-tuple Cartesian coordinates of the points on the map.
-    D: numpy.ndarray
+    D : numpy.ndarray
         An array with d_ij as the distance between points i and j.
     """
 
@@ -58,7 +58,7 @@ class Map:
         return len(self.points)
 
     def show2d(self):
-        """Return an indexed 2D visual representation of the map."""
+        """Return an indexed 2D visualisation of the map."""
         x = [i[0] for i in self.points]
         y = [j[1] for j in self.points]
         plt.scatter(x, y, s=50)
@@ -89,6 +89,10 @@ class Map:
         perms = permutations([i for i in range(n) if i != start])
         return [Hamiltonian((start,) + i, self) for i in perms]
 
+    def __eq__(self, other):
+        """Return true if maps are equal."""
+        return [self.points, self.dist_func] == [other.points, other.dist_func]
+
 
 class Circuit:
     """
@@ -98,10 +102,8 @@ class Circuit:
     ----------
     cycle : tuple
         Indices of all points in the circuit.
-    globalmap : Map
+    map : Map
         The map which the circuit belongs to.
-    localmap : Map
-        A miniature map containing all points of the circuit.
     journey : list
         A list of all steps taken in completing the circuit.
         List elements are 2-tuples.
@@ -138,7 +140,7 @@ class Circuit:
         return len(self.cycle)
 
     def show2d(self):
-        """Return an indexed 2D visual representation of the circuit."""
+        """Return an indexed 2D visualisation of the circuit."""
         x = np.array([i[0] for i in self.points]
                      + [self.points[0][0]])
         y = np.array([j[1] for j in self.points]
@@ -146,8 +148,8 @@ class Circuit:
         plt.plot(x[0], y[0], 'r*', markersize=12)
         plt.scatter(x, y, s=50)
         plt.quiver(x[:-1], y[:-1], x[1:]-x[:-1], y[1:]-y[:-1],
-                   scale_units='xy', angles='xy', scale=1, width=0.007,
-                   color='greenyellow')
+                   scale_units='xy', angles='xy', scale=1, width=0.008,
+                   color='green')
         plt.axis('scaled')
         plt.axis('off')
         for i, j in enumerate(self.cycle):
@@ -188,3 +190,79 @@ class Hamiltonian(Circuit):
             raise ValueError(f"{cycle} is not Hamiltonian.")
 
         super().__init__(cycle, map)
+
+# Experimental
+
+
+class System:
+    """
+    A system containing disjoint circuits.
+
+    As described in Julia Robinson's 'On the Hamiltonian game'.
+
+    Attributes
+    ----------
+    circuits : list
+        A list of the circuits present.
+    map: Map
+        The map the system belongs to.
+    journeys : list
+        A list of all steps taken in the system.
+    S : numpy.ndarray
+        The auxiliary matrix of the system.
+    """
+
+    def __init__(self, circuits):
+        """Initialise self with circuits and auxiliary matrix.."""
+        self.circuits = circuits
+        self.map = circuits[0].map
+        self.journeys = sum([i.journey for i in circuits], [])
+
+        i_ = []
+        n = len(self)
+        for i in range(n):
+            for j, k in self.journeys:
+                if i == j:
+                    i_.append(k)
+                    break
+        print(i_)
+        d = self.map.D
+        s = np.array([[d[j][i_[i]] - d[i][i_[i]] for j in range(n)]
+                     for i in range(n)])
+
+        for i in range(n):
+            s[i][i_[i]] = np.inf
+
+        self.S = s
+
+    def cost(self):
+        """Return total travelled distance across all circuits."""
+        return sum([i.cost() for i in self.circuits])
+
+    def __len__(self):
+        """Return number of points in the system."""
+        return sum([len(i) for i in self.circuits])
+
+    def s_length(self, circuit):
+        """Return the s-length of a closed circuit."""
+        return sum([self.S[a, b] for a, b in circuit.journey])
+
+    def show2d(self):
+        """Return an indexed 2D visualisation of the system."""
+        for c in self.circuits:
+            x = np.array([i[0] for i in c.points]
+                         + [c.points[0][0]])
+            y = np.array([j[1] for j in c.points]
+                         + [c.points[0][1]])
+            plt.plot(x[0], y[0], 'r*', markersize=12)
+            plt.scatter(x, y, s=50)
+            plt.quiver(x[:-1], y[:-1], x[1:]-x[:-1], y[1:]-y[:-1],
+                       scale_units='xy', angles='xy', scale=1, width=0.008,
+                       color='green')
+
+            for i, j in enumerate(c.cycle):
+                plt.annotate(" " + str(j), (x[i], y[i]), fontsize=15)
+
+        plt.axis('scaled')
+        plt.axis('off')
+        plt.show()
