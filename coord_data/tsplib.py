@@ -21,7 +21,7 @@ def gen_data(file, dist_func=None):
 
 
 djibouti = gen_data("djibouti.txt")
-wsahara = gen_data("WSahara.txt")
+wsahara = gen_data("wsahara.txt")
 usa = gen_data("usa.txt")
 
 best_nn(djibouti).show2d()
