@@ -148,3 +148,19 @@ class RandomGraph:
         M = A - np.diag(b)
         self.matrix = M
         self.graph = GraphMatrix(M)  # generates a random graph object
+
+
+class SymmetricRandomGraph:
+
+    def __init__(self, max_dist=100, number_of_cities=6):
+        """
+        Generate a random graph object.
+
+        accessed by attribute graph.
+        """
+        A = nrnd.randint(1, max_dist, [number_of_cities, number_of_cities])
+        S = A + A.transpose()
+        b = np.array(np.diag(S))
+        M = S - np.diag(b)
+        self.matrix = M
+        self.graph = GraphMatrix(M)  # generates a random graph object
