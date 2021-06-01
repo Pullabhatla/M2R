@@ -89,6 +89,10 @@ class Map:
         perms = permutations([i for i in range(n) if i != start])
         return [Hamiltonian((start,) + i, self) for i in perms]
 
+    def __eq__(self, other):
+        """Return true if maps are equal."""
+        return [self.points, self.dist_func] == [other.points, other.dist_func]
+
 
 class Circuit:
     """
@@ -98,10 +102,8 @@ class Circuit:
     ----------
     cycle : tuple
         Indices of all points in the circuit.
-    globalmap : Map
+    map : Map
         The map which the circuit belongs to.
-    localmap : Map
-        A miniature map containing all points of the circuit.
     journey : list
         A list of all steps taken in completing the circuit.
         List elements are 2-tuples.
@@ -188,3 +190,51 @@ class Hamiltonian(Circuit):
             raise ValueError(f"{cycle} is not Hamiltonian.")
 
         super().__init__(cycle, map)
+
+
+class System:
+    """
+    A system containing disjoint circuits.
+
+    As described in Julia Robinson's 'On the Hamiltonian game'.
+
+    Attributes
+    ----------
+    circuits : list
+        A list of the circuits present.
+    map: Map
+        The map the system belongs to.
+    journeys : list
+        A list of all steps taken in the system.
+    S : numpy.ndarray
+        The auxiliary matrix of the system.
+    """
+
+    def __init__(self, circuits):
+        """Initialise self with circuits and auxiliary matrix.."""
+        self.circuits = circuits
+        self.map = circuits[0].map
+        self.journeys = sum([i.journey for i in circuits], [])
+
+        i_ = []
+        n = len(self)
+        for i in range(n):
+            for j, k in self.journeys:
+                if i == j:
+                    i_.append(k)
+                    break
+
+        d = self.map.D
+        s = np.array([[d[j][i_[i]] - d[i][i_[i]] for j in range(n)]
+                     for i in range(n)])
+
+        for i in range(n):
+            s[i][i_[i]] = np.inf
+
+    def cost(self):
+        """Return total travelled distance across all circuits."""
+        return sum([i.cost() for i in self.circuits])
+
+    def __len__(self):
+        """Return number of points in the system."""
+        return sum([len(i) for i in self.circuits])

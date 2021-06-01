@@ -1,6 +1,6 @@
 """Data taken from http://www.math.uwaterloo.ca/tsp/world/countries.html."""
 
-from Req import Map
+from Req import Map, best_nn
 
 
 def gen_data(file, dist_func=None):
@@ -14,11 +14,15 @@ def gen_data(file, dist_func=None):
         entry = input.readline().strip().split()
         point = (float(entry[2]), float(entry[1]))
         points.append(point)
-    if dist_func:
+    if dist_func is None:
         return Map(points)
     else:
         return Map(points, dist_func)
 
 
 djibouti = gen_data("djibouti.txt")
-wsahara = gen_data("Wsahara.txt")
+wsahara = gen_data("WSahara.txt")
+usa = gen_data("usa.txt")
+
+best_nn(djibouti).show2d()
+best_nn(wsahara).show2d()
