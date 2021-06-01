@@ -94,7 +94,7 @@ class Graph:
         return A
 
     def neighbors(self, c):
-        """Find neghbor cities in the radius."""
+        """Find neighbor cities of c."""
         return self.G.neighbors(c)
 
     def distance_neighbors(self, c):
