@@ -1,6 +1,6 @@
 """Suite of functions to generate maps for test cases."""
 
-from .req import Map
+from Req import Map
 from math import sin, cos, pi
 from random import random
 
