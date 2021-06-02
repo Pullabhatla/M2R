@@ -1,4 +1,8 @@
-"""Kruskal min span tree."""
+"""
+Kruskal mini span tree.
+
+good for undirected.
+"""
 
 
 class Kruskal:
@@ -18,6 +22,8 @@ class Kruskal:
 
     def kruskal(self):
         """Find minimum spannig tree using kruskals algorithm."""
+        travelled_distance = self.ordered_distance[0]
+        travelled_distance_list = [self.ordered_distance[0]]
         travelled_edges = [self.ordered_links[0]]
         travelled_nodes = [self.ordered_links[0][0], self.ordered_links[0][1]]
         for i, j in zip(self.ordered_links[1:], self.ordered_distance[1:]):
@@ -25,6 +31,9 @@ class Kruskal:
                 travelled_nodes.append(i[0])
                 travelled_nodes.append(i[1])
                 travelled_edges.append(i)
+                travelled_distance_list.append(j)
+                travelled_distance += j
                 if sorted(set(travelled_nodes)) == set(self.nodes):
                     break
-        return set(travelled_nodes), travelled_edges
+        return (set(travelled_nodes), travelled_edges, travelled_distance_list,
+                travelled_distance)
