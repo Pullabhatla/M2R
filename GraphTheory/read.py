@@ -41,7 +41,7 @@ class Graph:
             self.v = len(set_nodes)
         else:
             self.v = nc
-        G = nx.MultiDiGraph()
+        G = nx.MultiDiGraph()  # noqa N806
         self.weighted_edge_list = [i + (j,)
                                    for i, j in zip(self.links, self.distance)]
         G.add_weighted_edges_from(self.weighted_edge_list)
@@ -88,7 +88,7 @@ class Graph:
 
     def adjacency(self):
         """Cost adjacency matrix of the graph."""
-        A = np.zeros([self.v, self.v])
+        A = np.zeros([self.v, self.v])  # noqa N806
         for u, d in zip(self.links, self.distance):
             A[u[0]-1, u[1]-1] = d
         return A
@@ -120,7 +120,7 @@ class GraphMatrix:
     into Graph will all its features.
     """
 
-    def __init__(self, A):
+    def __init__(self, A):   # noqa N806
         """Convert into a Graph object."""
         self.A = A
         n = len(A)
@@ -136,6 +136,7 @@ class GraphMatrix:
 
 
 class RandomGraph:
+    """Random graph generator."""
 
     def __init__(self, max_dist=100, number_of_cities=6):
         """
@@ -143,14 +144,15 @@ class RandomGraph:
 
         accessed by attribute graph.
         """
-        A = nrnd.randint(1, max_dist, [number_of_cities, number_of_cities])
-        b = np.array(np.diag(A))
-        M = A - np.diag(b)
+        A = nrnd.randint(1, max_dist, [number_of_cities, number_of_cities])  # noqa N806
+        b = np.array(np.diag(A))  # noqa N806
+        M = A - np.diag(b)  # noqa N806
         self.matrix = M
         self.graph = GraphMatrix(M)  # generates a random graph object
 
 
 class SymmetricRandomGraph:
+    """Symmetric graph generator."""
 
     def __init__(self, max_dist=100, number_of_cities=6):
         """
@@ -158,9 +160,9 @@ class SymmetricRandomGraph:
 
         accessed by attribute graph.
         """
-        A = nrnd.randint(1, max_dist, [number_of_cities, number_of_cities])
-        S = A + A.transpose()
+        A = nrnd.randint(1, max_dist, [number_of_cities, number_of_cities])  # noqa N806
+        S = A + A.transpose()  # noqa N806
         b = np.array(np.diag(S))
-        M = S - np.diag(b)
+        M = S - np.diag(b)  # noqa N806
         self.matrix = M
         self.graph = GraphMatrix(M)  # generates a random graph object
