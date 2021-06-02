@@ -94,16 +94,16 @@ class Graph:
         return A
 
     def neighbors(self, c):
-        """Find neighbor cities of c."""
-        return self.G.neighbors(c)
+        """Find neghbor cities of c."""
+        return list(self.G.neighbors(c))
 
     def distance_neighbors(self, c):
         """Distance of neighbors of city c."""
-        return[self.edgelabels[f'({c}, {i})'] for i in self.neighbors()]
+        return[self.edgelabels[f'({c}, {i})'] for i in self.neighbors(c)]
 
     def radius(self, c, r):
         """Find cities at most a distance r from city c."""
-        neighbors = self.neighbors()
+        neighbors = self.neighbors(c)
         return [i for i in neighbors if self.edgelabels[f'({c}, {i})'] <= r]
 
     def speration(self, r):
