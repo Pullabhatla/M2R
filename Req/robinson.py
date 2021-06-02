@@ -31,3 +31,24 @@ def circuit_finder(system):
                 return Circuit(test, map)
 
     return None
+
+
+def robinson_solver(system):
+    """
+    Find a system which admits no circuits of negative s-length.
+
+    Parameters
+    ----------
+    system : System
+        The system of circuits under study.
+
+    Returns
+    -------
+    System
+        A system of minimal cost.
+    """
+    while circuit_finder(system) is not None:
+        circ = circuit_finder(system)
+        paths = system.journeys
+        for i in circ:
+            idx = paths.index((i, system.i_[i]))
