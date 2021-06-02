@@ -34,7 +34,7 @@ class Node:
 		return self
 			
 
-def rowReduction(matrix):
+def rowreduction(matrix):
 
 	rowmin = np.min(matrix, axis=1)
 	for i in range(len(matrix) - 1):
@@ -43,7 +43,7 @@ def rowReduction(matrix):
 				matrix[i][j] = matrix[i][j] - rowmin[i]
 
 
-def columnReduction(matrix):
+def columnreduction(matrix):
 
 	columnmin = np.min(matrix, axis=0)
 
@@ -59,7 +59,7 @@ def reducedmatrix(matrix):
 	return matrix
 	
 
-def calculateCost(matrix):
+def calculatecost(matrix):
 
 	cost = 0
 	rowmin = np.min(matrix, axis=1)
