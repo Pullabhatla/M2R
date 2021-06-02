@@ -2,11 +2,10 @@ import numpy as np
 from queue import PriorityQueue
 
 
-
 class Node:
 
-	def __init__(self, edges, matrix_reduced, cost, vertex, level):
-		self.path = edges
+	def __init__(self, path, matrix_reduced, cost, vertex, level):
+		self.path = path
 		self.matrix = matrix_reduced
 		self.cost = cost
 		self.vertex = vertex
@@ -15,9 +14,8 @@ class Node:
 	def newnode(self, matrix_parent, level, i, j):
 
 		newnode = Node
-
-		if level != 0:
-			newnode.path = self.path.append((i, j))
+		
+		newnode.path = self.path.append(j)
 		
 		newnode.matrix = matrix_parent
 
@@ -36,7 +34,7 @@ class Node:
 		return self
 			
 
-def rowReduction(matrix):
+def rowreduction(matrix):
 
 	rowmin = np.min(matrix, axis=1)
 	for i in range(len(matrix) - 1):
@@ -45,7 +43,7 @@ def rowReduction(matrix):
 				matrix[i][j] = matrix[i][j] - rowmin[i]
 
 
-def columnReduction(matrix):
+def columnreduction(matrix):
 
 	columnmin = np.min(matrix, axis=0)
 
@@ -53,14 +51,19 @@ def columnReduction(matrix):
 		for i in range(len(matrix) - 1):
 			if columnmin[i] != float('inf'):
 				matrix[i][j] = matrix[i][j] - columnmin[i]	
+
+
+def reducedmatrix(matrix):
+	matrix = rowReduction(matrix)
+	matrix = columnReduction(matrix)
+	return matrix
 	
 
-def calculateCost(matrix):
+def calculatecost(matrix):
 
 	cost = 0
 	rowmin = np.min(matrix, axis=1)
 	columnmin = np.min(matrix, axis=0)
-
 
 	for i in range(len(matrix)-1):
 		for num in rowmin:
@@ -74,14 +77,18 @@ def calculateCost(matrix):
 	return cost
 
 
+
 def tsp(matrix):
 
 	pq = PriorityQueue()
 
 	root = Node.newnode(matrix, 0, -1, 0)
 
-	cost = calculateCost(root.matrix)
+	rootcost = calculateCost(root.matrix)
 
-	pq.push(root)
+	pq.push(rootcost)
+
+	for j in range(len(matrix)-1):
+		child = Node.newnode()
 
 	
