@@ -1,8 +1,4 @@
-"""
-Kruskal mini span tree.
-
-good for undirected.
-"""
+"""Kruskal min span tree."""
 
 
 class Kruskal:
