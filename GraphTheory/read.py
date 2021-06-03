@@ -28,7 +28,7 @@ class Graph:
     nc - number of cities default none
     """
 
-    def __init__(self, links, distances, directed=True, nc=None):
+    def __init__(self, links, distances, directed=True, nc=None, pos=None):
         """Initialize graph."""
         self.links = links
         self.distance = distances
@@ -49,6 +49,8 @@ class Graph:
         G.add_weighted_edges_from(self.weighted_edge_list)
         self.G = G
         self.pos = nx.spring_layout(self.G)
+        if pos:
+            self.pos = pos
 
     def draw(self, edge_weights=False, directed=True, multi_edges=False):
         """Draw the graph."""
@@ -121,6 +123,31 @@ class Graph:
         works when undirected(directed=False).
         """
         return nx.is_connected(self.G)
+
+    def degrees(self):
+        """Return degree of each node."""
+        return self.G.degree([i for i in range(1, self.v + 1)])
+
+    def odd_nodes(self):
+        """List of odd degree nodes."""
+        v = dict(self.degrees()).items()
+        return [i for i, d in v if d % 2 == 1]
+
+    def sub_graph(self, nodes):
+        """Graph object subgraph of given set of nodes."""
+        H = self.G.subgraph(nodes)
+        weights = [self.edgelabels[f'{i}'] for i in H.edges()]
+        return Graph(list(H.edges()), weights, directed=False, pos=self.pos)
+
+    def min_matching(self):
+        """Min_matching graph."""
+        u1 = self.links
+        w1 = self.distance
+        neg_w1 = list(np.array(w1)*(-1))
+        new_graph = Graph(u1, neg_w1)
+        set_matching = nx.max_weight_matching(new_graph.G, maxcardinality=True)
+        weights = [-1 * new_graph.edgelabels[f'{i}'] for i in set_matching]
+        return Graph(list(set_matching), weights, directed=False)
 
 
 class GraphMatrix:
