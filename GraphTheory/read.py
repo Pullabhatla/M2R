@@ -28,7 +28,7 @@ class Graph:
     nc - number of cities default none
     """
 
-    def __init__(self, links, distances, nc=None):
+    def __init__(self, links, distances, directed=True, nc=None):
         """Initialize graph."""
         self.links = links
         self.distance = distances
@@ -42,6 +42,8 @@ class Graph:
         else:
             self.v = nc
         G = nx.MultiDiGraph()  # noqa N806
+        if not directed:
+            G = nx.Graph()  # noqa N806
         self.weighted_edge_list = [i + (j,)
                                    for i, j in zip(self.links, self.distance)]
         G.add_weighted_edges_from(self.weighted_edge_list)
@@ -112,6 +114,14 @@ class Graph:
         nodes = np.array(self.links)[truth_array]
         return list(nodes)
 
+    def connected(self):
+        """
+        Determine graph is connected only.
+
+        works when undirected(directed=False).
+        """
+        return nx.is_connected(self.G)
+
 
 class GraphMatrix:
     """
@@ -120,7 +130,7 @@ class GraphMatrix:
     into Graph will all its features.
     """
 
-    def __init__(self, A):   # noqa N806
+    def __init__(self, A):  # noqa N806
         """Convert into a Graph object."""
         self.A = A
         n = len(A)
@@ -145,7 +155,7 @@ class RandomGraph:
         accessed by attribute graph.
         """
         A = nrnd.randint(1, max_dist, [number_of_cities, number_of_cities])  # noqa N806
-        b = np.array(np.diag(A))  # noqa N806
+        b = np.array(np.diag(A))
         M = A - np.diag(b)  # noqa N806
         self.matrix = M
         self.graph = GraphMatrix(M)  # generates a random graph object
@@ -160,7 +170,7 @@ class SymmetricRandomGraph:
 
         accessed by attribute graph.
         """
-        A = nrnd.randint(1, max_dist, [number_of_cities, number_of_cities])  # noqa N806
+        A = nrnd.randint(1, max_dist, [number_of_cities, number_of_cities])   # noqa N806
         S = A + A.transpose()  # noqa N806
         b = np.array(np.diag(S))
         M = S - np.diag(b)  # noqa N806

@@ -2,7 +2,7 @@
 Kruskal and prims min span tree.
 
 good for undirected.
-prims similar to - "https://www.programiz.com/dsa/prim-algorithm"
+prims follows - "https://www.programiz.com/dsa/prim-algorithm"
 """
 
 
