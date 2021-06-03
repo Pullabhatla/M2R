@@ -2,7 +2,7 @@
 Kruskal and prims min span tree.
 
 good for undirected.
-prims follows - "https://www.programiz.com/dsa/prim-algorithm"
+prims similar to - "https://www.programiz.com/dsa/prim-algorithm"
 """
 
 
@@ -33,7 +33,7 @@ class MST:
         travelled_edges = [self.ordered_links[0]]
         travelled_nodes = [self.ordered_links[0][0], self.ordered_links[0][1]]
         for i, j in zip(self.ordered_links[1:], self.ordered_distance[1:]):
-            if not (i[0] and i[1] in travelled_nodes):
+            if len(set(i).intersection(set(travelled_nodes))) == 1:
                 travelled_nodes.append(i[0])
                 travelled_nodes.append(i[1])
                 travelled_edges.append(i)
