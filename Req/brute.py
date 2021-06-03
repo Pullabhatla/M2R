@@ -3,7 +3,7 @@
 
 def brute_tour(map):
     """
-    Return a possibly non-unique minimal solution to the TSP by brute-force.
+    Return an optimal solution in factorial time.
 
     Parameter
     ---------

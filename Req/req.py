@@ -93,6 +93,10 @@ class Map:
         """Return true if maps are equal."""
         return [self.points, self.dist_func] == [other.points, other.dist_func]
 
+    def __hash__(self):
+        """Return hash of tuple of points when hashed."""
+        return hash(tuple(self.points))
+
 
 class Circuit:
     """
@@ -157,12 +161,12 @@ class Circuit:
         plt.show()
 
     def __iter__(self):
-        """Return self on iterating."""
+        """Return self as iterator."""
         self.num = 0
         return self
 
     def __next__(self):
-        """Return a point and move to next."""
+        """Return a point index and move to next."""
         if self.num < len(self):
             dummy = self.cycle[self.num]
             self.num += 1
@@ -190,6 +194,61 @@ class Hamiltonian(Circuit):
             raise ValueError(f"{cycle} is not Hamiltonian.")
 
         super().__init__(cycle, map)
+
+
+class Segment:
+    """
+    Class implementing an open segment of points in a map.
+
+    Attributes
+    ----------
+    nodes : list
+        List containing nodes to be visited in order.
+    map : Map
+        The map the segment belongs to.
+    """
+
+    def __init__(self, nodes, map):
+        """
+        Initialise self with nodes and map.
+
+        Parameters
+        ----------
+        nodes : list
+            List containing nodes to be visited in order.
+        map : Map
+            The map the segment belongs to.
+        """
+        self.nodes = nodes
+        self.map = map
+
+    def __len__(self):
+        """Return the number of points in the segment."""
+        return len(self.nodes)
+
+    def cost(self):
+        """Return the cost of traversing the segment."""
+        return sum(self.map.dist(self.nodes[i], self.nodes[i + 1])
+                   for i in range(len(self) - 1))
+
+    def __lt__(self, other):
+        """Implement an ordering of segments."""
+        return self.cost() < other.cost()
+
+    def __iter__(self):
+        """Return self as iterator."""
+        self.num = 0
+        return self
+
+    def __next__(self):
+        """Return a node and move to next."""
+        if self.num < len(self):
+            dummy = self.nodes[self.num]
+            self.num += 1
+            return dummy
+
+        else:
+            raise StopIteration
 
 
 class System:
