@@ -51,6 +51,10 @@ def held_karp(map):
     """
     nodes = [i for i in range(1, len(map))]
 
-    return min(Hamiltonian(shortest_segment(tuple(i for i in nodes if i != end),
-                                            end, map).nodes, map)
-               for end in nodes if end != 0)
+    dummy = min(Hamiltonian(shortest_segment(tuple(i for i in nodes if i != d),
+                                             d, map).nodes, map)
+                for d in nodes if d != 0)
+
+    shortest_segment.cache_clear()  # clear cache for unbiased testing
+
+    return dummy
