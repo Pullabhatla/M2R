@@ -59,7 +59,7 @@ class MST:
             for i in range(self.number_nodes):
                 if selected[i]:
                     for j in range(self.number_nodes):
-                        if ((not selected[j]) and self.matrix[i][j]):  
+                        if ((not selected[j]) and self.matrix[i][j]):
                             if m > self.matrix[i][j]:
                                 m = self.matrix[i][j]
                                 x = i
