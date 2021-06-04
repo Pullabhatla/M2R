@@ -6,10 +6,10 @@ A suite of tools to investigate the Travelling Salesman and related problems.
 Algorithm   | Status
 ----------- |----------
 `brute_tour` | Partially Tested
-Held-Karp   | Partially Tested
+`held-karp`   | Partially Tested
 
 ## Heuristics:
 Algorithm   | Status
 ----------- |----------
-Nearest | Partially Tested
-Held-Karp   | Partially Tested
+`nearest_neghbour` | Partially Tested
+`best_nn`   | Partially Tested
