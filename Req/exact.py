@@ -1,7 +1,25 @@
-"""An implementation of the Bellman-Held-Karp algorithm."""
+"""Required objects for an exact solution approach to the TSP."""
 
+from Req import Hamiltonian, Segment
 from functools import lru_cache
-from Req import Segment, Hamiltonian
+
+
+def brute_tour(map):
+    """
+    Return an optimal solution in factorial time.
+
+    Parameter
+    ---------
+    map: Map
+        The map being investigated.
+    Returns
+    -------
+    Hamiltonian
+        A tour of minimum cost.
+    """
+    ham_cycles = [i for i in map.alltours()]
+
+    return min(ham_cycles)
 
 
 @lru_cache(None)
@@ -55,6 +73,6 @@ def held_karp(map):
                                              d, map).nodes, map)
                 for d in nodes if d != 0)
 
-    shortest_segment.cache_clear()  # clear cache for unbiased testing
+    shortest_segment.cache_clear()
 
     return dummy
