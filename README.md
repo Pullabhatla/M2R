@@ -28,6 +28,7 @@ Algorithm   | Status
 `prims` | Partially Tested
 `kruskal` | Partially Tested
 `ant_colony` | Not Tested
+Christofides | Not Implmented
 2-opt | Not Implemented
 Simulated Annealing | Not Implemented
 
