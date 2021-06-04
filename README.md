@@ -19,7 +19,6 @@ Algorithm   | Status
 `held-karp`   | Partially Tested
 `robinson_solver` | Partially Implemented
 Branch-and-bound | Not Implemented
-Branch-and-cut | Not Implemented
 
 ## Heuristics:
 Algorithm   | Status
@@ -30,6 +29,5 @@ Algorithm   | Status
 `kruskal` | Partially Tested
 `ant_colony` | Not Tested
 2-opt | Not Implemented
-3-opt | Not Implemented
-Lin–Kernighan | Not Implemented
+Simulated Annealing | Not Implemented
 
