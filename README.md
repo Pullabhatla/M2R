@@ -13,3 +13,4 @@ Algorithm   | Status
 ----------- |----------
 `nearest_neghbour` | Partially Tested
 `best_nn`   | Partially Tested
+`ant_colony` | Not Tested
