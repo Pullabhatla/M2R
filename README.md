@@ -18,13 +18,18 @@ Algorithm   | Status
 `brute_tour` | Partially Tested
 `held-karp`   | Partially Tested
 `robinson_solver` | Partially Implemented
+Branch-and-bound | Not Implemented
+Branch-and-cut | Not Implemented
 
 ## Heuristics:
 Algorithm   | Status
 ----------- |----------
-`nearest_neghbour` | Partially Tested
+`nearest_neighbour` | Partially Tested
 `best_nn`   | Partially Tested
 `prims` | Partially Tested
 `kruskal` | Partially Tested
 `ant_colony` | Not Tested
+2-opt | Not Implemented
+3-opt | Not Implemented
+Lin–Kernighan | Not Implemented
 
