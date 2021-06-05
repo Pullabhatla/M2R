@@ -1,1 +1,1 @@
-from .Ant_Colony import Ant_colony
+from .ant_colony import Ant_colony
