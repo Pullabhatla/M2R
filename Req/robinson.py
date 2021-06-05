@@ -8,6 +8,28 @@ from itertools import permutations
 from Req import Circuit, System
 
 
+def system_builder(paths, map):
+    """Build a system of circuits from a list of steps."""
+    circuits = []
+    n = len(paths)
+    while sum(len(i) for i in circuits) < n:
+        dummy = paths
+        cycle = list(dummy.pop())
+        d = 0
+
+        while d != len(paths):
+            d = len(paths)
+            for i, j in dummy:
+                if i in cycle and j in cycle:
+                    paths.pop(paths.index((i, j)))
+                elif i in cycle:
+                    paths.pop(paths.index(i, j))
+                    cycle.append(j)
+
+        circuits.append(Circuit(cycle, map))
+    return System(circuits)
+
+
 def circuit_finder(system):
     """
     Find a circuit of negative s-length.
@@ -49,6 +71,11 @@ def robinson_solver(system):
     """
     while circuit_finder(system) is not None:
         circ = circuit_finder(system)
-        paths = system.journeys
-        for i in circ:
-            idx = paths.index((i, system.i_[i]))
+        path = system.journeys
+        ln = len(circ)
+        for n, i in enumerate(circ):
+            path[path.index((i, system.i_[i]))] = (circ.cycle[(n + 1) % ln],
+                                                   system.i_[i])
+        system = system_builder(path, system.map)
+
+    return system
