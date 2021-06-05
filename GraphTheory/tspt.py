@@ -11,27 +11,23 @@ class Node:
 		self.vertex = vertex
 		self.level = level
 
-	def newnode(self, matrix_parent, level, i, j):
 
-		newnode = Node
+def newnode(matrix_parent, level, i, j):
+	
+	newnode = Node
+	newnode.path.append(j)
+	newnode.matrix = matrix_parent
+
+	for k in range(len(matrix_parent - 1)):
+		if level != 0:
+			newnode.matrix[i][k] = float('inf')
+			newnode.matrix[k][j] = float('inf')
 		
-		newnode.path = self.path.append(j)
-		
-		newnode.matrix = matrix_parent
-
-		for k in range(len(matrix_parent - 1)):
-			if level != 0:
-				newnode.matrix[i][k] = float('inf')
-				newnode.matrix[k][j] = float('inf')
-		
-		newnode.matrix[j][0] = float('inf')
-
-		newnode.level = level
-		newnode.vertex = j
-
-		self = newnode
-
-		return self
+	newnode.matrix[j][0] = float('inf')
+	newnode.level = level
+	newnode.vertex = j
+	newnode.cost = calculatecost(newnode.matrix)
+	return newnode
 			
 
 def rowreduction(matrix):
@@ -50,12 +46,12 @@ def columnreduction(matrix):
 	for j in range(len(matrix) - 1):
 		for i in range(len(matrix) - 1):
 			if columnmin[i] != float('inf'):
-				matrix[i][j] = matrix[i][j] - columnmin[i]	
+				matrix[i][j] = matrix[i][j] - columnmin[i]
 
 
 def reducedmatrix(matrix):
-	matrix = rowReduction(matrix)
-	matrix = columnReduction(matrix)
+	matrix = rowreduction(matrix)
+	matrix = columnreduction(matrix)
 	return matrix
 	
 
@@ -79,16 +75,30 @@ def calculatecost(matrix):
 
 
 def tsp(matrix):
-
+	optimal_cost = 0
+	optimal_tour = []
+	N = len(matrix) - 1
 	pq = PriorityQueue()
 
-	root = Node.newnode(matrix, 0, -1, 0)
+	root = newnode(matrix, 0, -1, 0)
+	root.matrix = reducedmatrix(root.matrix)
+	optimal_cost += root.cost
 
-	rootcost = calculateCost(root.matrix)
+	pq.put((root.cost, root))
 
-	pq.push(rootcost)
+	while not pq.empty():
+		minnode = pq.get()
+		pq.get()
+		optimal_tour.append(minnode[1].vertex)
 
-	for j in range(len(matrix)-1):
-		child = Node.newnode()
+		if minnode[1].level == N - 1:
+			optimal_tour.append(0)
 
-	
+			return optimal_tour, minnode[1].cost
+
+		for j in range(1, N):
+			if reducedmatrix(minnode[1].matrix)[minnode[1].vertex][j] != float('inf'):
+				child = newnode(minnode[1].matrix, minnode[1].level + 1, minnode[1].vertex, j)
+				child.cost = minnode[1].cost + minnode[1].matrix[minnode[1].vertex][j] + calculatecost(child.matrix)
+				child.matrix = reducedmatrix(child.matrix)
+				pq.put((child.cost, child))
