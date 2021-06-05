@@ -28,7 +28,8 @@ class Graph:
     nc - number of cities default none
     """
 
-    def __init__(self, links, distances, directed=True, nc=None, pos=None):
+    def __init__(self, links, distances, directed=True, undirected_multi=False,
+                 nc=None, pos=None):
         """Initialize graph."""
         self.links = links
         self.distance = distances
@@ -42,8 +43,13 @@ class Graph:
         else:
             self.v = nc
         G = nx.MultiDiGraph()  # noqa N806
+        self.val = True
         if not directed:
             G = nx.Graph()  # noqa N806
+            self.val = False
+        if undirected_multi:
+            G = nx.MultiGraph()  # noqa N806
+            self.val = True
         self.weighted_edge_list = [i + (j,)
                                    for i, j in zip(self.links, self.distance)]
         G.add_weighted_edges_from(self.weighted_edge_list)
@@ -52,8 +58,11 @@ class Graph:
         if pos:
             self.pos = pos
 
-    def draw(self, edge_weights=False, directed=True, multi_edges=False):
+    def draw(self, edge_weights=False, directed=True, multi_edges=False,
+             pos=None):
         """Draw the graph."""
+        if pos:
+            self.pos = pos
         if multi_edges:
             nx.draw(self.G, self.pos, arrows=True, with_labels=True,
                     connectionstyle='arc3, rad = 0.2')
@@ -135,8 +144,13 @@ class Graph:
 
     def sub_graph(self, nodes):
         """Graph object subgraph of given set of nodes."""
-        H = self.G.subgraph(nodes)
-        weights = [self.edgelabels[f'{i}'] for i in H.edges()]
+        H = self.G.subgraph(nodes)  # noqa N806
+        if self.val:
+            weights = [self.G.get_edge_data(*i)[0]['weight']
+                       for i in H.edges()]
+        else:
+            weights = [self.G.get_edge_data(*i)['weight']
+                       for i in H.edges()]
         return Graph(list(H.edges()), weights, directed=False, pos=self.pos)
 
     def min_matching(self):
@@ -144,10 +158,46 @@ class Graph:
         u1 = self.links
         w1 = self.distance
         neg_w1 = list(np.array(w1)*(-1))
-        new_graph = Graph(u1, neg_w1)
+        new_graph = Graph(u1, neg_w1, directed=False)
         set_matching = nx.max_weight_matching(new_graph.G, maxcardinality=True)
-        weights = [-1 * new_graph.edgelabels[f'{i}'] for i in set_matching]
+        if new_graph.val:
+            weights = [-1 * new_graph.G.get_edge_data(*i)[0]['weight']
+                       for i in set_matching]
+        else:
+            weights = [-1 * new_graph.G.get_edge_data(*i)['weight']
+                       for i in set_matching]
         return Graph(list(set_matching), weights, directed=False)
+
+    def union(self, other):
+        """Union of 2 graphs that keeps repeat edges."""
+        if not isinstance(other, Graph):
+            raise TypeError
+        total_link_list = self.links + other.links
+        total_distance = self.distance + other.distance
+        return Graph(total_link_list, total_distance, undirected_multi=True)
+
+    def eulerian_tour(self):
+        """Find eulerian tour of a graph."""
+        graph = self.G
+        edges_eulerian_tour = list(nx.eulerian_circuit(graph))
+        if self.val:
+            weights = [self.G.get_edge_data(*i)[0]['weight']
+                       for i in edges_eulerian_tour]
+        else:
+            weights = [self.G.get_edge_data(*i)['weight']
+                       for i in edges_eulerian_tour]
+        return Graph(edges_eulerian_tour, weights)
+
+    def shortcut(self):
+        """Short cut the graph."""
+        tour = [i[0] for i in self.links]
+        visited_vertices = []
+        for vertex in tour:
+            if vertex not in visited_vertices:
+                visited_vertices.append(vertex)
+        visited_vertices.append(tour[0])
+        return [(i, j)
+                for i, j in zip(visited_vertices[:-1], visited_vertices[1:])]
 
 
 class GraphMatrix:
@@ -157,7 +207,7 @@ class GraphMatrix:
     into Graph will all its features.
     """
 
-    def __init__(self, A):  # noqa N806
+    def __init__(self, A, directed=True, undirected_multi=False):  # noqa N806
         """Convert into a Graph object."""
         self.A = A
         n = len(A)
@@ -165,7 +215,8 @@ class GraphMatrix:
         self.dist_list = []
         [(self.link_list.append((i+1, j+1)), self.dist_list.append(A[i, j]))
          for i in range(n) for j in range(n) if A[i, j]]
-        self.G = Graph(self.link_list, self.dist_list)
+        self.G = Graph(self.link_list, self.dist_list,
+                       directed=directed, undirected_multi=undirected_multi)
 
     def graph(self):
         """Return Graph object."""
