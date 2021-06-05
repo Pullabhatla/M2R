@@ -6,6 +6,7 @@ class Node:
 
 	def __init__(self, path, matrix_reduced, cost, vertex, level):
 		self.path = path
+		self.path = []
 		self.matrix = matrix_reduced
 		self.cost = cost
 		self.vertex = vertex
@@ -14,27 +15,23 @@ class Node:
 
 def newnode(matrix_parent, level, i, j):
 	
-	newnode = Node
-	newnode.path.append(j)
-	newnode.matrix = matrix_parent
+	node = Node([], matrix_parent, calculatecost(matrix_parent), j, level)
+	node.path.append(j)
 
-	for k in range(len(matrix_parent - 1)):
+	for k in range(len(matrix_parent) - 1):
 		if level != 0:
-			newnode.matrix[i][k] = float('inf')
-			newnode.matrix[k][j] = float('inf')
+			node.matrix[i][k] = float('inf')
+			node.matrix[k][j] = float('inf')
 		
-	newnode.matrix[j][0] = float('inf')
-	newnode.level = level
-	newnode.vertex = j
-	newnode.cost = calculatecost(newnode.matrix)
-	return newnode
+	node.matrix[j][0] = float('inf')
+	return node
 			
 
 def rowreduction(matrix):
 
 	rowmin = np.min(matrix, axis=1)
-	for i in range(len(matrix) - 1):
-		for j in range(len(matrix) - 1):
+	for i in range(len(matrix)):
+		for j in range(len(matrix)):
 			if rowmin[i] != float('inf'):
 				matrix[i][j] = matrix[i][j] - rowmin[i]
 
@@ -43,8 +40,8 @@ def columnreduction(matrix):
 
 	columnmin = np.min(matrix, axis=0)
 
-	for j in range(len(matrix) - 1):
-		for i in range(len(matrix) - 1):
+	for j in range(len(matrix)):
+		for i in range(len(matrix)):
 			if columnmin[i] != float('inf'):
 				matrix[i][j] = matrix[i][j] - columnmin[i]
 
@@ -59,26 +56,26 @@ def calculatecost(matrix):
 
 	cost = 0
 	rowmin = np.min(matrix, axis=1)
+	matrix = rowreduction(matrix)
 	columnmin = np.min(matrix, axis=0)
 
-	for i in range(len(matrix)-1):
-		for num in rowmin:
-			if num != float('inf'):
-				cost += num
+	for num in rowmin:
+		if num != float('inf'):
+			cost += num
 
-		for num in columnmin:
-			if num != float('inf'):
-				cost += num
+	for num in columnmin:
+		if num != float('inf'):
+			cost += num
 
 	return cost
 
 
-
 def tsp(matrix):
 	optimal_cost = 0
-	optimal_tour = []
 	N = len(matrix) - 1
 	pq = PriorityQueue()
+	for i in range(len(matrix)):
+		matrix[i][i] = float('inf')
 
 	root = newnode(matrix, 0, -1, 0)
 	root.matrix = reducedmatrix(root.matrix)
@@ -89,12 +86,9 @@ def tsp(matrix):
 	while not pq.empty():
 		minnode = pq.get()
 		pq.get()
-		optimal_tour.append(minnode[1].vertex)
 
 		if minnode[1].level == N - 1:
-			optimal_tour.append(0)
-
-			return optimal_tour, minnode[1].cost
+			return minnode[1].path, minnode[1].cost
 
 		for j in range(1, N):
 			if reducedmatrix(minnode[1].matrix)[minnode[1].vertex][j] != float('inf'):
