@@ -1,6 +1,7 @@
 """Required objects for the TSP and related problems."""
 
 from itertools import permutations
+from math import nan
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import euclidean
@@ -285,12 +286,13 @@ class System:
 
         d = self.map.D
         s = np.array([[d[j][i_[i]] - d[i][i_[i]] for j in range(n)]
-                     for i in range(n)])
+                     for i in range(n)], float)
 
         for i in range(n):
             s[i][i_[i]] = np.inf
 
         self.S = s
+        self.i_ = i_
 
     def cost(self):
         """Return total travelled distance across all circuits."""
