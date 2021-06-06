@@ -17,7 +17,7 @@ Algorithm   | Status
 ----------- |----------
 `brute_tour` | Partially Tested
 `held-karp`   | Partially Tested
-`robinson_solver` | Partially Implemented
+`robinson_solver` | Fully Tested
 Branch-and-bound | Not Implemented
 
 ## Heuristics:
@@ -28,7 +28,7 @@ Algorithm   | Status
 `prims` | Partially Tested
 `kruskal` | Partially Tested
 `ant_colony` | Not Tested
-Christofides | Not Implmented
+`christofides` | Partially Tested
 2-opt | Not Implemented
 Simulated Annealing | Not Implemented
 
