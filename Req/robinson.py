@@ -23,7 +23,7 @@ def system_builder(paths, map):
                 if i in cycle and j in cycle:
                     paths.pop(paths.index((i, j)))
                 elif i in cycle:
-                    paths.pop(paths.index(i, j))
+                    paths.pop(paths.index((i, j)))
                     cycle.append(j)
 
         circuits.append(Circuit(cycle, map))
