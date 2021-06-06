@@ -12,7 +12,7 @@ class Node:
         self.level = level
 
 
-def newnode( matrix_parent, level, i, j, prev_node=None):  # prev_node node class object of i 
+def newnode(matrix_parent, level, i, j, prev_node=None):  # prev_node node class object of i 
     if prev_node:
         path = prev_node.path.append(j)
     else:
