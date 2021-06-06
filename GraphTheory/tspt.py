@@ -72,27 +72,31 @@ def calculatecost(matrix):
 
 
 def tsp(matrix):
-    optimal_cost = 0
     pq = PriorityQueue()
     for i in range(len(matrix)):
         matrix[i][i] = float('inf')
 
     root = newnode(matrix, 0, -1, 0)
     root.matrix = reducedmatrix(root.matrix)
-    optimal_cost += root.cost
 
     pq.put((root.cost, root))
 
     while not pq.empty():
-        minnode = pq.get()
-        pq.get()
+
+        minnode = pq.queue[0]
+        q = PriorityQueue()
+        q.put(minnode)
+        pq = q
 
         if minnode[1].level == len(matrix) - 1:
-            return minnode[1].path, minnode[1].cost
+            return minnode[1].path.append(0), minnode[1].cost
 
         for j in range(1, len(matrix)):
-            if reducedmatrix(minnode[1].matrix)[minnode[1].vertex][j] != float('inf'):
+            if minnode[1].matrix[minnode[1].vertex][j] != float('inf'):
                 child = newnode(minnode[1].matrix, minnode[1].level + 1, minnode[1].vertex, j)
                 child.cost = minnode[1].cost + minnode[1].matrix[minnode[1].vertex][j] + calculatecost(child.matrix)
                 child.matrix = reducedmatrix(child.matrix)
                 pq.put((child.cost, child))
+        if len(pq.queue) != 1:
+            pq.get()
+
