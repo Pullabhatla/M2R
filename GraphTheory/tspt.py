@@ -83,6 +83,8 @@ def tsp(matrix):
 
     while not pq.empty():
 
+        if len(pq.queue) != 1:
+            pq.get()
         minnode = pq.queue[0]
         q = PriorityQueue()
         q.put(minnode)
@@ -97,6 +99,4 @@ def tsp(matrix):
                 child.cost = minnode[1].cost + minnode[1].matrix[minnode[1].vertex][j] + calculatecost(child.matrix)
                 child.matrix = reducedmatrix(child.matrix)
                 pq.put((child.cost, child))
-        if len(pq.queue) != 1:
-            pq.get()
 
