@@ -12,15 +12,15 @@ class Node:
         self.level = level
 
 
-def newnode(matrix_parent, level, i, j, prev_node=None):  # prev_node node class object of i 
+def newnode( matrix_parent, level, i, j, prev_node=None):  # prev_node node class object of i 
     if prev_node:
-        path = prev_node.path.append(j)
+        path = prev_node.path+[j]
     else:
         path = [0]
  
     node = Node(path, matrix_parent, calculatecost(matrix_parent), j, level)
     
-    for k in range(len(matrix_parent) - 1):
+    for k in range(len(matrix_parent)):
         if level != 0:
             node.matrix[i][k] = float('inf')
             node.matrix[k][j] = float('inf')
@@ -42,7 +42,6 @@ def rowreduction(matrix):
 def columnreduction(matrix):
 
     columnmin = np.min(matrix, axis=0)
-    print(columnmin)
 
     for j in range(len(matrix)):
         for i in range(len(matrix)):
@@ -79,21 +78,20 @@ def tsp(matrix):
     root.matrix = reducedmatrix(root.matrix)
 
     pq.put((root.cost, root))
-
+    minnode = pq.queue[0]
     while not pq.empty():
 
-        if len(pq.queue) != 1:
-            pq.get()
-        minnode = pq.queue[0]
+        
+       
         q = PriorityQueue()
-        q.put(minnode) # q kept
 
-        if minnode[1].level == len(matrix) - 1:
+        if minnode[1].level == (len(matrix) - 1):
             return minnode[1].path.append(0), minnode[1].cost
 
         for j in range(1, len(matrix)):
             if minnode[1].matrix[minnode[1].vertex][j] != float('inf'):
-                child = newnode(minnode[1].matrix, minnode[1].level + 1, minnode[1].vertex, j)
+                child = newnode(minnode[1].matrix, minnode[1].level + 1, minnode[1].vertex, j, prev_node=minnode[1])
                 child.cost = minnode[1].cost + minnode[1].matrix[minnode[1].vertex][j] + calculatecost(child.matrix)
                 child.matrix = reducedmatrix(child.matrix)
                 q.put((child.cost, child)) # add to q
+        minnode = q.queue[0]
