@@ -29,6 +29,6 @@ Algorithm   | Status
 `kruskal` | Partially Tested
 `ant_colony` | Not Tested
 `christofides` | Partially Tested
-2-opt | Not Implemented
-Simulated Annealing | Not Implemented
+`repeated_2_opt` | Not Tested
+`SA` | Partially Implemented
 
