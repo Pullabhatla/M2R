@@ -1,6 +1,6 @@
 from Req import Map
-
-def SA(map, t0 = 100, t, alpha, int_its):
+from gen_new_path import simple_swap
+def SA(map, t0 = 100, alpha, int_its):
     number_of_points = len(map1.points)
     coordinates = []
     for i in range(number_of_points):
@@ -13,10 +13,7 @@ def SA(map, t0 = 100, t, alpha, int_its):
                 distmat[i][j] = distmat[j][i]=np.linalg.norm(coordinates[i]-coordinates[j])
         return distmat
 
-    def initpara():
-        temp = (10**(-5), t0)
-        markovlen = 1000
-        return alpha, temp, markovlen
+    
 
     num = number_of_points
     distmat = getdistmat(coordinates) """get the distance matrix"""
@@ -29,7 +26,8 @@ def SA(map, t0 = 100, t, alpha, int_its):
     solutionbest = solutionnew.copy()
     valuebest = 99000
 
-    alpha,t2,markovlen = initpara()
+    t2 = (10**(-5), t0)
+
     t = t2[1]
     ext_its = 0
     result = [] """here its for the optimal solution"""
