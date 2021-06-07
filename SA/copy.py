@@ -32,7 +32,7 @@ def random_swap(tour):
     n = len(tour)
     a = np.random.randint(n)
     b = np.random.randint(n)
-    while b==a:
+    while b == a:
         b = np.random.randint(n)
     nodes = list(tour.cycle)
     swap_index = (a, b)
@@ -43,7 +43,15 @@ def random_swap(tour):
     return Hamiltonian(tuple(nodes), tour.map)
 
 
-def simulated_annealing(tour, t0=100, alpha=0.9, int_its=1000, swap=two_opt_swap):
+def random_2_opt(tour):
+    """Return tour after randomised 2-opt swap."""
+    n = len(tour)
+    a = np.random.randint(n - 1)
+    b = np.random.randint(a + 1, n)
+    return two_opt_swap(a, b, tour)
+
+
+def simulated_annealing(tour, t0=100, alpha=0.9, int_its=1000, swap=random_2_opt):
     """
     Return tour after applying simulated annealing.
 
@@ -78,3 +86,4 @@ def simulated_annealing(tour, t0=100, alpha=0.9, int_its=1000, swap=two_opt_swap
                 best_tour = new_tour
 
         t = alpha * t
+    return best_tour
