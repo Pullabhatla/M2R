@@ -5,6 +5,7 @@ from queue import PriorityQueue
 class Node:
 
     def __init__(self, path, matrix_reduced, cost, vertex, level):
+
         self.path = path  # order of vertices
         self.matrix = matrix_reduced
         self.cost = cost
@@ -12,14 +13,13 @@ class Node:
         self.level = level
 
 
-def newnode( matrix_parent, level, i, j, prev_node=None):  # prev_node node class object of i 
+def newnode(matrix_parent, level, i, j, prev_node=None):  # prev_node node class object of i 
+
     if prev_node:
         path = prev_node.path+[j]
     else:
         path = [0]
- 
-    node = Node(path, matrix_parent, calculatecost(matrix_parent), j, level)
-    
+    node = Node(path, matrix_parent, calculatecost(matrix_parent), j, level)    
     for k in range(len(matrix_parent)):
         if level != 0:
             node.matrix[i][k] = float('inf')
@@ -42,21 +42,22 @@ def rowreduction(matrix):
 def columnreduction(matrix):
 
     columnmin = np.min(matrix, axis=0)
-
     for j in range(len(matrix)):
         for i in range(len(matrix)):
-            if columnmin[j] != float('inf'): #i to j 
-                matrix[i][j] = matrix[i][j] - columnmin[j] # i to j
+            if columnmin[j] != float('inf'):  # i to j
+                matrix[i][j] = matrix[i][j] - columnmin[j]  # i to j
     return matrix
 
 
 def reducedmatrix(matrix):
+
     matrix = rowreduction(matrix)
     matrix = columnreduction(matrix)
     return matrix
 
 
 def calculatecost(matrix):
+
     cost = 0
     rowmin = np.min(matrix, axis=1)
     matrix = rowreduction(matrix)
@@ -71,27 +72,39 @@ def calculatecost(matrix):
 
 
 def tsp(matrix):
+
     pq = PriorityQueue()
-    matrix = matrix + np.diag([float('inf')]*len(matrix)) # mat change
- 
+    matrix = matrix + np.diag([float('inf')]*len(matrix))  # mat change
+
     root = newnode(matrix, 0, -1, 0)
     root.matrix = reducedmatrix(root.matrix)
 
     pq.put((root.cost, root))
     minnode = pq.queue[0]
+
     while not pq.empty():
-
-        
-       
         q = PriorityQueue()
-
         if minnode[1].level == (len(matrix) - 1):
-            return minnode[1].path.append(0), minnode[1].cost
-
+            return minnode[1].path+[0], minnode[1].cost
         for j in range(1, len(matrix)):
             if minnode[1].matrix[minnode[1].vertex][j] != float('inf'):
-                child = newnode(minnode[1].matrix, minnode[1].level + 1, minnode[1].vertex, j, prev_node=minnode[1])
-                child.cost = minnode[1].cost + minnode[1].matrix[minnode[1].vertex][j] + calculatecost(child.matrix)
-                child.matrix = reducedmatrix(child.matrix)
-                q.put((child.cost, child)) # add to q
+                # child.cost = cost of travel + costcurrentreduction + cost of previuos reduction
+                # child.matrix = reducedmatrix(changerowcolumn to inf matrix)
+                minmatrix_copy = minnode[1].matrix.copy()
+
+                new_level = minnode[1].level + 1
+                i = minnode[1].vertex
+
+                child = newnode(minnode[1].matrix, new_level, i, j,
+                                prev_node=minnode[1])
+                # after newnode matrix is goin to have the infs
+                # minnodematrix has changed
+                cost = (minmatrix_copy[minnode[1].vertex][j] + minnode[1].cost
+                        + calculatecost(child.matrix))
+                # during calculate cost child.matrix already gets row reduced
+                child.matrix = columnreduction(child.matrix)
+                child.cost = cost
+                # reset minnode matrix back what it was
+                minnode[1].matrix = minmatrix_copy
+                q.put((child.cost, child))  # add to q
         minnode = q.queue[0]
