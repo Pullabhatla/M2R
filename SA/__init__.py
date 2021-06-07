@@ -1,2 +1,2 @@
 from .SA import SA
-from .SA import gen_new_path
+from .gen_new_path import simple_swap

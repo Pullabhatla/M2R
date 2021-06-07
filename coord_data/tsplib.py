@@ -12,7 +12,7 @@ def gen_data(file, dist_func=None):
 
     for i in range(n):
         entry = input.readline().strip().split()
-        point = (float(entry[2]), float(entry[1]))
+        point = (float(entry[1]), float(entry[2]))
         points.append(point)
     if dist_func is None:
         return Map(points)
