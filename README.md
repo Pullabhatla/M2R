@@ -30,5 +30,5 @@ Algorithm   | Status
 `ant_colony` | Not Tested
 `christofides` | Partially Tested
 `repeated_2_opt` | Not Tested
-`SA` | Partially Implemented
+`simulated_annealing` | Not Tested
 

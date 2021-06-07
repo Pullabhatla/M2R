@@ -1,1 +1,1 @@
-from .tsplib import djibouti, wsahara, usa # noqa
+from .tsplib import a280, djibouti, vlsi, wsahara # noqa
