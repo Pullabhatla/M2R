@@ -41,10 +41,10 @@ class MST:
                 travelled_edges.append(i)
                 travelled_distance_list.append(j)
                 travelled_distance += j
-            if (not any(val,
-                        i in travelled_edges,
-                        tuple(reversed(i)) in travelled_edges,
-                        G.add_edge(i, j).cyclic())):
+            if (not any([val,
+                         i in travelled_edges,
+                         tuple(reversed(i)) in travelled_edges,
+                         G.add_edge(i, j).cyclic()])):
                 travelled_nodes.append(i[0])
                 travelled_nodes.append(i[1])
                 travelled_edges.append(i)
