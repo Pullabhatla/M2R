@@ -77,7 +77,6 @@ def robinson_solver(system):
         for n, i in enumerate(circ):
             path[path.index((i, sys.i_[i]))] = (circ.cycle[(n + 1) % ln],
                                                 sys.i_[i])
-            print(path)
         sys = system_builder(path, sys.map)
 
     return sys

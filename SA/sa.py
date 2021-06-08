@@ -21,7 +21,26 @@ def random_swap(tour):
     return Hamiltonian(tuple(nodes), tour.map)
 
 
-def random_2_opt(tour):
+def random_vertex_insert_mutation(tour):
+    """Return tour after randomly inserting a node."""
+    n = len(tour)
+    a = np.random.randint(n-1)
+    b = np.random.randint(a + 1, n)
+
+    return tour[:a] + tour[b] + tour[a:b] + tour[b+1:]
+
+
+def random_block_insert_mutation(tour):
+    """Return tour after randomly swapping two blocks."""
+    n = len(tour)
+    a = np.random.randint(n - 2)
+    b = np.random.randint(a + 1, n - 1)
+    c = np.random.randint(b + 1, n)
+
+    return tour[:a] + tour[b:c+1] + tour[c+1:]
+
+
+def random_block_reverse_mutation(tour):
     """Return tour after randomised 2-opt swap."""
     n = len(tour)
     a = np.random.randint(n - 1)
@@ -29,7 +48,7 @@ def random_2_opt(tour):
     return two_opt_swap(a, b, tour)
 
 
-def simulated_annealing(tour, t0=100, alpha=0.98, int_its=200, swap=random_2_opt):
+def simulated_annealing(tour, t0=100, alpha=0.98, int_its=200, swap=random_swap):  # noqa E501
     """
     Return tour after applying simulated annealing.
 
