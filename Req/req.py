@@ -175,6 +175,10 @@ class Circuit:
         else:
             raise StopIteration
 
+    def __repr__(self):
+        """Printable representation of a circuit."""
+        return str(tuple(self.cycle))
+
 
 class Hamiltonian(Circuit):
     """Circuit subclass implementing a complete tour of a map."""
@@ -324,3 +328,6 @@ class System:
         plt.axis('scaled')
         plt.axis('off')
         plt.show()
+
+    def __repr__(self):
+        return str(self.circuits)

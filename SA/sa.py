@@ -5,28 +5,6 @@ from Req.req import Hamiltonian
 import numpy as np
 
 
-def simple_swap(tour):
-    """
-    Swap a random node with immediate neighbour and return tour.
-
-    Parameters
-    ----------
-    tour : Hamiltonian
-        The tour to be manipulated.
-    Returns
-    -------
-    Hamiltonian
-        The tour after manipulation.
-    """
-    n = len(tour)
-    a = np.random.randint(n)
-    nodes = list(tour.cycle)
-    chosen = (nodes[a], nodes[a-1])
-    for i in range(2):
-        nodes[a - i] = chosen[1 - i]
-    return Hamiltonian(tuple(nodes), tour.map)
-
-
 def random_swap(tour):
     """Return tour after randomised swap."""
     n = len(tour)
@@ -51,7 +29,7 @@ def random_2_opt(tour):
     return two_opt_swap(a, b, tour)
 
 
-def simulated_annealing(tour, t0=100, alpha=0.9, int_its=1000, swap=random_2_opt):
+def simulated_annealing(tour, t0=100, alpha=0.98, int_its=200, swap=random_2_opt):
     """
     Return tour after applying simulated annealing.
 

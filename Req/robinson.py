@@ -69,13 +69,15 @@ def robinson_solver(system):
     System
         A system of minimal cost.
     """
-    while circuit_finder(system) is not None:
-        circ = circuit_finder(system)
-        path = system.journeys
+    sys = system
+    while circuit_finder(sys) is not None:
+        circ = circuit_finder(sys)
+        path = sys.journeys
         ln = len(circ)
         for n, i in enumerate(circ):
-            path[path.index((i, system.i_[i]))] = (circ.cycle[(n + 1) % ln],
-                                                   system.i_[i])
-        system = system_builder(path, system.map)
+            path[path.index((i, sys.i_[i]))] = (circ.cycle[(n + 1) % ln],
+                                                sys.i_[i])
+            print(path)
+        sys = system_builder(path, sys.map)
 
-    return system
+    return sys
