@@ -5,7 +5,7 @@ good for undirected.
 prims is from  - "https://www.programiz.com/dsa/prim-algorithm"
 """
 import numpy as np
-from GraphTheory.read import GraphMatrix, Graph  # noqa F401
+from GraphTheory.read import Graph
 
 
 class MST:
@@ -26,7 +26,7 @@ class MST:
         self.matrix = graph.adjacency()
 
     def kruskal(self):
-        """Find minimum spannig tree using kruskals algorithm."""
+        """Find minimum spanning tree using kruskals algorithm."""
         val = True
         travelled_distance = self.ordered_distance[0]
         travelled_distance_list = [self.ordered_distance[0]]
@@ -35,16 +35,16 @@ class MST:
         for i, j in zip(self.ordered_links[1:], self.ordered_distance[1:]):
             G = (Graph(travelled_edges, travelled_distance_list,  # noqa N806
                        directed=False))
-            if len(set(i).intersection(set(travelled_nodes)))<2 and val:
+            if len(set(i).intersection(set(travelled_nodes))) < 2 and val:
                 travelled_nodes.append(i[0])
                 travelled_nodes.append(i[1])
                 travelled_edges.append(i)
                 travelled_distance_list.append(j)
                 travelled_distance += j
-            if (not val
-                and not(i in travelled_edges)
-                and not(tuple(reversed(i)) in travelled_edges)
-                and not(G.add_edge(i, j).cyclic())):
+            if (not any(val,
+                        i in travelled_edges,
+                        tuple(reversed(i)) in travelled_edges,
+                        G.add_edge(i, j).cyclic())):
                 travelled_nodes.append(i[0])
                 travelled_nodes.append(i[1])
                 travelled_edges.append(i)
@@ -54,7 +54,7 @@ class MST:
                 val = False
 
             if (G.connected() and
-                len(set(travelled_nodes)) == self.number_nodes):
+                    len(set(travelled_nodes)) == self.number_nodes):
                 return (set(travelled_nodes), travelled_edges,
                         travelled_distance_list, travelled_distance)
 
