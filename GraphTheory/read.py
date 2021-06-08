@@ -133,6 +133,19 @@ class Graph:
         """
         return nx.is_connected(self.G)
 
+    def cyclic(self):
+        """
+        Test if graph is cyclic.
+
+        only used on undirected graph.
+        """
+        return bool(len(nx.cycle_basis(self.G)))
+
+    def add_edge(self, edge, weight):
+        """Adding in an extra edge."""
+        return Graph(self.links+[edge],
+                     self.distance+[weight], directed=False)
+
     def degrees(self):
         """Return degree of each node."""
         return self.G.degree([i for i in range(1, self.v + 1)])
@@ -193,7 +206,7 @@ class Graph:
         tour = [i[0] for i in self.links]
         visited_vertices = []
         for vertex in tour:
-            if vertex not in visited_vertices:
+            if not(vertex in visited_vertices):
                 visited_vertices.append(vertex)
         visited_vertices.append(tour[0])
         return [(i, j)
