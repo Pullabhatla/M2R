@@ -3,6 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.random as nrnd
+from networkx.algorithms import tree
 
 
 def read_in_csv(filepath):
@@ -145,6 +146,14 @@ class Graph:
         """Adding in an extra edge."""
         return Graph(self.links+[edge],
                      self.distance+[weight], directed=False)
+
+    def spanning_tree(self):
+        """Find the minimumspanning tree."""
+        mst = tree.minimum_spanning_edges(self.G, algorithm="kruskal")
+        edgelist = list(mst)
+        links = [i[0:2] for i in edgelist]
+        weights = [i[2]['weight'] for i in edgelist]
+        return Graph(links, weights, directed=False)
 
     def degrees(self):
         """Return degree of each node."""
