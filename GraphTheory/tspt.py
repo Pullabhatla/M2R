@@ -140,6 +140,7 @@ def children(node, n):
 def tspfull(matrix):
 
     lowerbound = tsp(matrix)[1]  #first lowerbound
+    matrix_copy = matrix.copy()
     n = len(matrix)
     matrix = matrix + np.diag([float('inf')]*len(matrix))  # mat change
 
@@ -162,7 +163,7 @@ def tspfull(matrix):
 
     if len(q) == 0:
     #if q becomes empty, then there is no other path with a cost less than the lowerbound, so return original path
-        return tsp(matrix)
+        return tsp(matrix_copy)
     else:
     #otherwise, find the least costing path out of the level4 children and make that the path
         minnode = min(q)
