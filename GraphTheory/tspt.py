@@ -158,11 +158,11 @@ def tspfull(matrix):
             for childnode in children(currentnode, n):
                 if childnode[0] < lowerbound: #if that childnode is below the lowerbound, that branch is explored
                     w.append(childnode)
-        q = w #q is now a list of the next level of children with costs below lowerbound
+            q = w #q is now a list of the next level of children with costs below lowerbound
 
     if len(q) == 0:
     #if q becomes empty, then there is no other path with a cost less than the lowerbound, so return original path
-        return tsp(matrix) 
+        return tsp(matrix)
     else:
     #otherwise, find the least costing path out of the level4 children and make that the path
         minnode = min(q)
