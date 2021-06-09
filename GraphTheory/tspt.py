@@ -108,3 +108,62 @@ def tsp(matrix):
                 minnode[1].matrix = minmatrix_copy
                 q.put((child.cost, child))  # add to q
         minnode = q.queue[0]
+
+
+def children(node, n):
+#puts every unvisited child of a node in a list, matrix length is n
+    q = []
+    for j in range(1, n):
+        if node[1].matrix[node[1].vertex][j] != float('inf'):
+            # child.cost = cost of travel + costcurrentreduction + cost of previous reduction
+            # child.matrix = reducedmatrix(changerowcolumn to inf matrix)
+            minmatrix_copy = node[1].matrix.copy()
+
+            new_level = node[1].level + 1
+            i = node[1].vertex
+
+            child = newnode(node[1].matrix, new_level, i, j,
+                            prev_node=node[1])
+            # after newnode matrix is goin to have the infs
+            # minnodematrix has changed
+            cost = (minmatrix_copy[node[1].vertex][j] + node[1].cost
+                    + calculatecost(child.matrix))
+            # during calculate cost child.matrix already gets row reduced
+            child.matrix = columnreduction(child.matrix)
+            child.cost = cost
+            # reset minnode matrix back what it was
+            node[1].matrix = minmatrix_copy
+            q.append((child.cost, child))  # add to q
+    return q
+
+
+def tspfull(matrix):
+
+    lowerbound = tsp(matrix)[1]  #first lowerbound
+    n = len(matrix)
+    matrix = matrix + np.diag([float('inf')]*len(matrix))  # mat change
+
+    root = newnode(matrix, 0, -1, 0)
+    root.matrix = reducedmatrix(root.matrix)
+    
+    #create list with root
+    q = []
+    q.append((root.cost, root))
+
+    #go through each level
+    for i in range(1, n):
+        w = [] #this will be a list of all the unvisited children nodes of each node in q
+        while q:
+            currentnode = q.pop(0)
+            for childnode in children(currentnode, n):
+                if childnode[0] < lowerbound: #if that childnode is below the lowerbound, that branch is explored
+                    w.append(childnode)
+        q = w #q is now a list of the next level of children with costs below lowerbound
+
+    if len(q) == 0:
+    #if q becomes empty, then there is no other path with a cost less than the lowerbound, so return original path
+        return tsp(matrix) 
+    else:
+    #otherwise, find the least costing path out of the level4 children and make that the path
+        minnode = min(q)
+        return minnode[1].path+[0], minnode[1].cost
