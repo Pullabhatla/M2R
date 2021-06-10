@@ -10,7 +10,7 @@ def christofides1(matrix, over_ride=False, name='graph', own_kruskals=False):
         raise TypeError(f'Expected an array got {type(matrix).__name__}')
     if not over_ride:
         if not np.allclose(matrix, matrix.T):
-            print('Matrix input is not symmetric.')
+            raise NotImplementedError('Matrix input is not symmetric.')
         else:
             print('Matrix input is symmetric.')
     matrix_copy = matrix.copy()
