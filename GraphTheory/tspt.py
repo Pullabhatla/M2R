@@ -75,13 +75,6 @@ def tsp(matrix):
 
     pq = PriorityQueue()
     matrix = matrix + np.diag([float('inf')]*len(matrix))  # mat change
-
-    if np.allclose(np.array(matrix), np.array(matrix).transpose(), rtol=1e-05, atol=1e-08):
-        for j in range(len(matrix)):
-            for i in range(len(matrix)):
-                if j > i:
-                    matrix[i][j] = float('inf')
-
     root = newnode(matrix, 0, -1, 0)
     root.matrix = reducedmatrix(root.matrix)
 
