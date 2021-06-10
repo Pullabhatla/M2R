@@ -24,6 +24,7 @@ def coord_to_matrix(x, y, dist_function=None):
     adj += adj.T
     return adj
 
+
 # adj matrix:
 kn57 = read_data('kn57_dist.csv')
 uk12 = read_data('uk12_dist.csv')
