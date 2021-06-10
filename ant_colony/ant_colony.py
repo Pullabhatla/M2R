@@ -37,7 +37,7 @@ def ant_colony(map, alpha, beta, m, rho, q, its_max):
         eta[i, i] = 0
     paths_array = np.zeros((m, n), int)
     its = 0
-    path_best = np.zeros((its_max, n))
+    path_best = np.zeros((its_max, n), int)
     distance_best = np.zeros(its_max)
 
     while its < its_max:
@@ -89,4 +89,4 @@ def ant_colony(map, alpha, beta, m, rho, q, its_max):
 
         its += 1
 
-    return Hamiltonian(path_best[-1])
+    return Hamiltonian(path_best[-1], map)

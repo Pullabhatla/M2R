@@ -27,7 +27,7 @@ def gen_data(file, dist_func=None):
         return Map(points, dist_func)
 
 
-a280 = gen_data("a280.txt")
+a280 = gen_data("~/M2R/M2R/coord_data/a280.txt")
 djibouti = gen_data("djibouti.txt")
 vlsi = gen_data("vlsi.txt")
 wsahara = gen_data("wsahara.txt")
