@@ -48,7 +48,19 @@ def random_block_reverse_mutation(tour):
     return two_opt_swap(a, b, tour)
 
 
-def simulated_annealing(tour, t0=100, alpha=0.98, int_its=200, swap=random_swap):  # noqa E501
+def hybrid(tour):
+    """Return tour after randomised hybrid swap."""
+    n = np.random.random()
+
+    if n < 0.89:
+        return random_block_reverse_mutation(tour)
+    elif n < 0.99:
+        return random_vertex_insert_mutation(tour)
+    else:
+        return random_block_insert_mutation(tour)
+
+
+def simulated_annealing(tour, t0=100, alpha=0.99, int_its=20, swap=random_swap):  # noqa E501
     """
     Return tour after applying simulated annealing.
 
