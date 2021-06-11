@@ -4,7 +4,7 @@ import numpy as np
 from Req import Hamiltonian
 
 
-def ant_colony(map, alpha=3, beta=3, m=10, rho=0.2, q=1, its_max=10):
+def ant_colony(map, alpha=3, beta=4, m=10, rho=0.2, q=1, its_max=10):
     """
     Perform ant colony optimisation on a map.
 
