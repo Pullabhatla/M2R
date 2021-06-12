@@ -98,7 +98,6 @@ def tsp(matrix):
         q = PriorityQueue()
 
         if minnode[1].level == (len(matrix) - 1):
-            node_queue = sorted(node_queue)
             # print(node_queue)
             return(minnode[1].path+[0], minnode[1].cost, node_queue)
           
@@ -128,7 +127,6 @@ def tsp(matrix):
                 q.put((child.cost, child)) # add to q
             
         minnode = q.queue[0]
-        [node_queue.append(i) for i in q.queue[1:]] # collects any children not explored
 
 
 def children(node, n):
@@ -181,5 +179,5 @@ def tspfull3(matrix):
                     lowerbound = childnode[0]
                     q = [i for i in q if i[0]<=lowerbound]
         if len(q)==1 and q[0][1].level==n-1:
-            return q[0]
-    
+            return q[0][0], q[0][1].path+[0]
+   
