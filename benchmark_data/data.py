@@ -29,6 +29,7 @@ def tsp_norm(a, b):
     """Euclidean norm rounded to the nearest integer."""
     return int(euclidean(a, b).round(0))
 
+
 def read_data(filename):
     """Read in CSV files from the data folder."""
     return pd.read_csv(os.path.join(
