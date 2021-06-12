@@ -15,12 +15,14 @@ zi929 : 95345
 """
 import pandas as pd
 import numpy as np
+import os
 from scipy.spatial.distance import euclidean
 
 
 def read_data(filename):
     """Read in CSV files from the data folder."""
-    return pd.read_csv(filename)
+    return pd.read_csv(os.path.join(
+        os.path.dirname(__file__), "..", "benchmark_data", filename))
 
 
 def coord_to_matrix(x, y, dist_function=None):
@@ -61,7 +63,7 @@ a_280 = a280.to_numpy()
 djibouti_adjacencymatrix = coord_to_matrix(dj_38[:, 1], dj_38[:, 0])
 # wsahara data dile is arranged yx
 ws_adjacencymatrix = coord_to_matrix(wi_29[:, 1], wi_29[:, 0])
-# vlsi data dile is arranged yx
+# vlsi data file is arranged yx
 vlsi_adjacencymatrix = coord_to_matrix(xqf_131[:, 1], xqf_131[:, 0])
-# a280 data dile is arranged yx
+# a280 data file is arranged yx
 a280_adjacencymatrix = coord_to_matrix(a_280[:, 1], a_280[:, 0])
