@@ -87,3 +87,9 @@ qa194 = gen_data('qa194.txt')
 bcl380 = gen_data('bcl380.txt')
 
 xql662 = gen_data('xql662.txt')
+
+mat_list = [uk12, wi29, dj38, xqf131, qa194, a280,
+            bcl380, xql662, uy734, zi929]
+
+opt_tour_lengths = [1733, 27603, 6656, 564, 9352, 2579,
+                    1621, 2513, 79114, 95345]
