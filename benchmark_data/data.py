@@ -1,14 +1,26 @@
-"""Read data."""
+"""
+Read data.
+
+Optimal Tours
+-------------
+uk12 : 1733
+wi29 : 27603
+dj38 : 6656
+kn57 : 
+sgb128 :
+xqf131 : 564
+a280 : 2579
+uy734 : 79114
+zi929 : 95345
+"""
 import pandas as pd
-import os
 import numpy as np
 from scipy.spatial.distance import euclidean
 
 
 def read_data(filename):
     """Read in CSV files from the data folder."""
-    return pd.read_csv(os.path.join(
-        os.path.dirname(__file__), "..", "distance_data", filename))
+    return pd.read_csv(filename)
 
 
 def coord_to_matrix(x, y, dist_function=None):
@@ -34,22 +46,22 @@ kn_57 = kn57.to_numpy()
 uk_12 = uk12.to_numpy()
 sgb_128 = sgb128.to_numpy()
 # coord data:
-djibouti = read_data('djibouti.csv')
-wsahara = read_data('wsahara.csv')
-vlsi = read_data('vlsi.csv')
+dj38 = read_data('dj38.csv')
+wi29 = read_data('wi29.csv')
+xqf131 = read_data('xqf131.csv')
 a280 = read_data('a280.csv')
 # can add more csv files in like this
 
-d_array = djibouti.to_numpy()
-ws_array = wsahara.to_numpy()
-vlsi_array = vlsi.to_numpy()
-a280_array = a280.to_numpy()
+dj_38 = dj38.to_numpy()
+wi_29 = wi29.to_numpy()
+xqf_131 = xqf131.to_numpy()
+a_280 = a280.to_numpy()
 # need to input x and y coord the right way
 # djabouti data file is arrange yx
-djibouti_adjacencymatrix = coord_to_matrix(d_array[:, 1], d_array[:, 0])
+djibouti_adjacencymatrix = coord_to_matrix(dj_38[:, 1], dj_38[:, 0])
 # wsahara data dile is arranged yx
-ws_adjacencymatrix = coord_to_matrix(ws_array[:, 1], ws_array[:, 0])
+ws_adjacencymatrix = coord_to_matrix(wi_29[:, 1], wi_29[:, 0])
 # vlsi data dile is arranged yx
-vlsi_adjacencymatrix = coord_to_matrix(vlsi_array[:, 1], vlsi_array[:, 0])
+vlsi_adjacencymatrix = coord_to_matrix(xqf_131[:, 1], xqf_131[:, 0])
 # a280 data dile is arranged yx
-a280_adjacencymatrix = coord_to_matrix(a280_array[:, 1], a280_array[:, 0])
+a280_adjacencymatrix = coord_to_matrix(a_280[:, 1], a_280[:, 0])
