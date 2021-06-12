@@ -11,8 +11,6 @@ def christofides1(matrix, over_ride=False, name='graph', own_kruskals=False):
     if not over_ride:
         if not np.allclose(matrix, matrix.T):
             raise NotImplementedError('Matrix input is not symmetric.')
-        else:
-            print('Matrix input is symmetric.')
     matrix_copy = matrix.copy()
     matrix = np.triu(matrix)
     GM = GraphMatrix(matrix, directed=False)  # noqa N806
@@ -31,8 +29,4 @@ def christofides1(matrix, over_ride=False, name='graph', own_kruskals=False):
     short = euler_graph.shortcut()
     weights = [matrix_copy[i[0]-1][i[1]-1] for i in short]
     solution = Graph(short, weights)
-    return print(
-        f'links: {solution.links}\n'
-        f'distances: {solution.distance}\n'
-        f'total distance={sum(weights)}'
-            )
+    return solution.distance
