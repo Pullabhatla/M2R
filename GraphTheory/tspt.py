@@ -83,6 +83,7 @@ def calculatecost(matrix):
 
 def tsp(matrix):
     pq = PriorityQueue()
+    node_queue = []
     matrix = matrix + np.diag([float('inf')]*len(matrix)) # mat change
 
     root = newnode(matrix, 0, -1, 0)
@@ -97,7 +98,9 @@ def tsp(matrix):
         q = PriorityQueue()
 
         if minnode[1].level == (len(matrix) - 1):
-            return(minnode[1].path+[0], minnode[1].cost)
+            node_queue = sorted(node_queue)
+            # print(node_queue)
+            return(minnode[1].path+[0], minnode[1].cost, node_queue)
           
 
         for j in range(1, len(matrix)):
@@ -121,19 +124,17 @@ def tsp(matrix):
                 child.cost = cost
                 # reset minnode matrix back what it was
                 minnode[1].matrix = minmatrix_copy
-          
-
 
                 q.put((child.cost, child)) # add to q
-
-
-
+            
         minnode = q.queue[0]
+        [node_queue.append(i) for i in q.queue[1:]] # collects any children not explored
 
 
 def children(node, n):
 #puts every unvisited child of a node in a list, matrix length is n
-    q = []
+    
+    q = PriorityQueue()
     for j in range(1, n):
         if node[1].matrix[node[1].vertex][j] != float('inf'):
             # child.cost = cost of travel + costcurrentreduction + cost of previous reduction
@@ -154,8 +155,10 @@ def children(node, n):
             child.cost = cost
             # reset minnode matrix back what it was
             node[1].matrix = minmatrix_copy
-            q.append((child.cost, child))  # add to q
+            q.put((child.cost, child))  # add to q
     return q
+
+    
 
 
 def tspfull(matrix):
@@ -189,3 +192,22 @@ def tspfull(matrix):
     #otherwise, find the least costing path out of the level4 children and make that the path
         minnode = min(q)
         return minnode[1].path+[0], minnode[1].cost
+
+def tspfull2(matrix):
+    tsp_output = tsp(matrix) 
+    lowerbound = tsp_output[1]  #first lowerbound
+    matrix_copy = matrix.copy()
+    n = len(matrix)
+    matrix = matrix + np.diag([float('inf')]*len(matrix))  # mat change
+    
+    less_lb = [i for i in tsp_output[2] if i[0]<lowerbound]
+    # empty list check 
+    less_lb
+    less_lb_level = sorted(less_lb, key=lambda x: -1*x[1].level)
+    furthestless_lb_lev # take smallest 
+
+    root = newnode(matrix, 0, -1, 0)
+    root.matrix = reducedmatrix(root.matrix)
+    
+    
+    
