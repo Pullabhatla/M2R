@@ -1,6 +1,9 @@
 """
-Read data.
-
+Data from:
+https://people.sc.fsu.edu/~jburkardt/datasets/cities/cities.html - uk12
+http://www.math.uwaterloo.ca/tsp/world/countries.html - wi29, dj38, qa194, uy734, zi929 # noqa
+http://www.math.uwaterloo.ca/tsp/vlsi/index.html - xqf131, bcl380, xql662
+http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/ - a280
 Optimal Tours
 -------------
 uk12 : 1733
