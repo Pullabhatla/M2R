@@ -9,6 +9,8 @@ dj38 : 6656
 xqf131 : 564
 qa194 : 9352
 a280 : 2579
+bcl380 : 1621
+xql662 : 2513
 uy734 : 79114
 zi929 : 95345
 """
@@ -78,3 +80,7 @@ uy734 = gen_data('uy734.txt')
 zi929 = gen_data('zi929.txt')
 
 qa194 = gen_data('qa194.txt')
+
+bcl380 = gen_data('bcl380.txt')
+
+xql662 = gen_data('xql662.txt')
