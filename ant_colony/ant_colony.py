@@ -4,7 +4,7 @@ import numpy as np
 from Req import Hamiltonian
 
 
-def ant_colony(map, alpha=3, beta=4, m=10, rho=0.2, q=1, its_max=10):
+def ant_colony(map, alpha=3, beta=4, m=10, rho=0.2, q=1, its_max=20):
     """
     Perform ant colony optimisation on a map.
 
@@ -53,14 +53,14 @@ def ant_colony(map, alpha=3, beta=4, m=10, rho=0.2, q=1, its_max=10):
             for j in range(1, n):
                 visited.append(node_now)
                 unvisited.remove(node_now)
-                prob_roulette = [0]*n
+                prob_roulette = np.array([0]*n, dtype=float)
                 for k in unvisited:
                     prob_roulette[k] = (pow(tau[node_now, k], alpha)
                                         * pow(eta[node_now, k], beta))
                 prob_roulette = prob_roulette/sum(prob_roulette)
                 cum_roulette = prob_roulette.cumsum()
                 cum_roulette -= np.random.uniform(0, 1)
-                node_next = list(cum_roulette > 0).index(True)
+                node_next = list(cum_roulette >= 0).index(True)
                 paths_array[i, j] = node_next
                 paths_length[i] += map.D[node_now, node_next]
                 node_now = node_next

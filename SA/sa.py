@@ -6,7 +6,7 @@ import numpy as np
 
 
 def random_swap(tour):
-    """Return tour after randomised swap."""
+    """Randomly choose and swap two nodes in a cycle."""
     n = len(tour)
     a = np.random.randint(n)
     b = np.random.randint(n)
@@ -22,45 +22,49 @@ def random_swap(tour):
 
 
 def random_vertex_insert_mutation(tour):
-    """Return tour after randomly inserting a node."""
+    """Randomly remove a node and inject elsewhere in the cycle."""
     n = len(tour)
     a = np.random.randint(n-1)
     b = np.random.randint(a + 1, n)
 
-    return tour[:a] + tour[b] + tour[a:b] + tour[b+1:]
+    return Hamiltonian(tuple(list(tour.cycle[:a]) + [tour.cycle[b]]
+                             + list(tour.cycle[a:b]) + list(tour.cycle[b+1:])),
+                       tour.map)
 
 
 def random_block_insert_mutation(tour):
-    """Return tour after randomly swapping two blocks."""
+    """Randomly remove consecutive nodes and inject elsewhere in the cycle."""
     n = len(tour)
     a = np.random.randint(n - 2)
     b = np.random.randint(a + 1, n - 1)
     c = np.random.randint(b + 1, n)
 
-    return tour[:a] + tour[b:c+1] + tour[c+1:]
+    return Hamiltonian(tuple(list(tour.cycle[:a]) + list(tour.cycle[b:c+1])
+                             + list(tour.cycle[a:b]) + list(tour.cycle[c+1:])),
+                       tour.map)
 
 
 def random_block_reverse_mutation(tour):
-    """Return tour after randomised 2-opt swap."""
+    """Randomly apply a 2-opt swap to the tour."""
     n = len(tour)
     a = np.random.randint(n - 1)
     b = np.random.randint(a + 1, n)
     return two_opt_swap(a, b, tour)
 
 
-def hybrid(tour):
-    """Return tour after randomised hybrid swap."""
+def hybrid(tour, a=0.89, b=0.1):
+    """Cocktail of tour mutations."""
     n = np.random.random()
 
-    if n < 0.89:
+    if n < a:
         return random_block_reverse_mutation(tour)
-    elif n < 0.99:
+    elif n < a + b:
         return random_vertex_insert_mutation(tour)
     else:
         return random_block_insert_mutation(tour)
 
 
-def simulated_annealing(tour, t0=100, alpha=0.99, int_its=20, swap=random_swap):  # noqa E501
+def simulated_annealing(tour, t0=100, alpha=0.99, int_its=20, swap=hybrid):  # noqa E501
     """
     Return tour after applying simulated annealing.
 
