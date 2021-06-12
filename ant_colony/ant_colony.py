@@ -60,13 +60,7 @@ def ant_colony(map, alpha=3, beta=4, m=10, rho=0.2, q=1, its_max=20):
                 prob_roulette = prob_roulette/sum(prob_roulette)
                 cum_roulette = prob_roulette.cumsum()
                 cum_roulette -= np.random.uniform(0, 1)
-                try:
-                    node_next = list(cum_roulette >= 0).index(True)
-                except:
-                    print(prob_roulette)
-                    print(tau)
-                    print(eta)
-                    raise ValueError
+                node_next = list(cum_roulette >= 0).index(True)
                 paths_array[i, j] = node_next
                 paths_length[i] += map.D[node_now, node_next]
                 node_now = node_next
