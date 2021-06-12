@@ -1,5 +1,2 @@
-"""Data package for benchmarking."""
-from .data import (kn_57, uk_12, sgb_128, djibouti_adjacencymatrix,  # noqa f401
-                   ws_adjacencymatrix, vlsi_adjacencymatrix,
-                   a280_adjacencymatrix)
-from .data import coord_to_matrix # noqa f401
+from .data import (uk12, wi29, dj38, xqf131, qa194, a280,  # noqa
+                   bcl380, xql662, uy734, zi929)
