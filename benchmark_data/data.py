@@ -4,6 +4,7 @@ https://people.sc.fsu.edu/~jburkardt/datasets/cities/cities.html - uk12
 http://www.math.uwaterloo.ca/tsp/world/countries.html - wi29, dj38, qa194, uy734, zi929 # noqa
 http://www.math.uwaterloo.ca/tsp/vlsi/index.html - xqf131, bcl380, xql662
 http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/ - a279
+
 Optimal Tours
 -------------
 uk12 : 1733
@@ -24,6 +25,10 @@ from scipy.spatial.distance import euclidean
 from Req import Map
 
 
+def tsp_norm(a, b):
+    """Euclidean norm rounded to the nearest integer."""
+    return int(euclidean(a, b).round(0))
+
 def read_data(filename):
     """Read in CSV files from the data folder."""
     return pd.read_csv(os.path.join(
@@ -31,9 +36,9 @@ def read_data(filename):
 
 
 def coord_to_matrix(x, y, dist_function=None):
-    """Convert coordinate data into matricx form."""
+    """Convert coordinate data into matrix form."""
     coordlist = [(i, j) for i, j in zip(x, y)]
-    dist_function = euclidean
+    dist_function = tsp_norm
     if dist_function:
         dist_function = dist_function
     n = len(x)
@@ -44,7 +49,7 @@ def coord_to_matrix(x, y, dist_function=None):
     return adj
 
 
-def gen_data(filename, dist_func=None):
+def gen_data(filename, dist_func=tsp_norm):
     """Read TSP data from a text file and generate an adjacency matrix."""
     input = open(os.path.join(
         os.path.dirname(__file__), "..", "benchmark_data", filename))
