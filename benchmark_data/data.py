@@ -6,8 +6,6 @@ Optimal Tours
 uk12 : 1733
 wi29 : 27603
 dj38 : 6656
-kn57 : 
-sgb128 :
 xqf131 : 564
 qa194 : 9352
 a280 : 2579
@@ -60,9 +58,7 @@ def gen_data(filename, dist_func=None):
 
 
 # matrix data to adj:
-kn57 = read_data('kn57_dist.csv').to_numpy()
 uk12 = read_data('uk12_dist.csv').to_numpy()
-sgb128 = read_data('sgb128_dist.csv').to_numpy()
 
 # coord data to adj:
 dj38 = read_data('dj38.csv').to_numpy()
@@ -80,3 +76,5 @@ a280 = coord_to_matrix(a280[:, 0], a280[:, 1])
 uy734 = gen_data('uy734.txt')
 
 zi929 = gen_data('zi929.txt')
+
+qa194 = gen_data('qa194.txt')
