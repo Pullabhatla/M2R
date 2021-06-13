@@ -95,10 +95,10 @@ def repeated_2_opt(tour):
     Hamiltonian
         The tour after performing the swaps.
     """
-    pre_iter = tour
+    pre_iter = None
     post_iter = tour
 
-    while pre_iter == tour or post_iter.cost() < pre_iter.cost():
+    while pre_iter == None or post_iter.cost() < pre_iter.cost():
         pre_iter = post_iter
         opt_tour = post_iter
         for i in range(len(tour) - 1):
