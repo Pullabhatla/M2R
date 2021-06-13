@@ -99,7 +99,7 @@ def tsp(matrix):
 
         if minnode[1].level == (len(matrix) - 1):
             # print(node_queue)
-            return(minnode[1].path+[0], minnode[1].cost, node_queue)
+            return(minnode[1].path+[0], minnode[1].cost)
           
 
         for j in range(1, len(matrix)):
