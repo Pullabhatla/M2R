@@ -36,7 +36,6 @@ uk12 = read_data('uk12_dist.csv')
 wg22 = read_data('wg22_dist.csv')
 sgb128 = read_data('sgb128_dist.csv')
 wg59 = read_data('wg59_dist_NEW.csv')
-#  read_data('usca312_dist.csv')  data file not ready yet
 
 djibouti = read_data('djibouti.csv')
 usa = read_data('usa.csv')
