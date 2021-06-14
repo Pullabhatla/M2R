@@ -41,6 +41,7 @@ def christofides(matrix, over_ride=False, name='graph', own_kruskals=False):
     print(f'Subgraph is connected = {sub_graph.connected()}')
     # finding the minimum weight perfect matching of the subgraph
     minG = sub_graph.min_matching()  # noqa N806
+    minG.draw(directed=False, pos=GM_G.pos)
     # find the union of the minimum weight matching and the spanning tree
     union_graph = minG.union(min_span_tree)
     # find the eulerian tour
