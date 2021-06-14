@@ -52,12 +52,7 @@ burma_coord = read_data('bm33708.csv')
 e_array = egypt_coord.to_numpy()
 f_array = finland_coord.to_numpy()
 h_array = honduras_coord.to_numpy()
-b_array = burma_coord.to_numpy()
-
-egypt_adjacencymatrix = coord_to_matrix(e_array[:, 1], e_array[:, 0])
-finland_adjacencymatrix = coord_to_matrix(f_array[:, 1], f_array[:, 0])
-honduras_adjacencymatrix = coord_to_matrix(h_array[:, 1], h_array[:, 0])
-burma_adjacencymatrix = coord_to_matrix(b_array[:, 1], b_array[:, 0])
+# b_array = burma_coord.to_numpy()  # too many nodes
 
 d_array = djibouti.to_numpy()
 u_array = usa.to_numpy()
