@@ -3,6 +3,10 @@ import pandas as pd
 import os
 import numpy as np
 from scipy.spatial.distance import euclidean
+"""
+http://www.math.uwaterloo.ca/tsp/world/countries.html
+https://people.sc.fsu.edu/~jburkardt/datasets/cities/cities.html
+"""
 
 
 def read_data(filename):
@@ -38,6 +42,22 @@ djibouti = read_data('djibouti.csv')
 usa = read_data('usa.csv')
 wsahara = read_data('wsahara.csv')
 # can add more csv files in like this
+
+# heavy ones :)
+egypt_coord = read_data('eg7146.csv')
+finland_coord = read_data('fi10639.csv')
+honduras_coord = read_data('ho14473.csv')
+burma_coord = read_data('bm33708.csv')
+
+e_array = egypt_coord.to_numpy()
+f_array = finland_coord.to_numpy()
+h_array = honduras_coord.to_numpy()
+b_array = burma_coord.to_numpy()
+
+egypt_adjacencymatrix = coord_to_matrix(e_array[:, 1], e_array[:, 0])
+finland_adjacencymatrix = coord_to_matrix(f_array[:, 1], f_array[:, 0])
+honduras_adjacencymatrix = coord_to_matrix(h_array[:, 1], h_array[:, 0])
+burma_adjacencymatrix = coord_to_matrix(b_array[:, 1], b_array[:, 0])
 
 d_array = djibouti.to_numpy()
 u_array = usa.to_numpy()
