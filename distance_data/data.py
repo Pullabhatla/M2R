@@ -37,6 +37,7 @@ wg22 = read_data('wg22_dist.csv')
 sgb128 = read_data('sgb128_dist.csv')
 wg59 = read_data('wg59_dist_NEW.csv')
 
+
 djibouti = read_data('djibouti.csv')
 usa = read_data('usa.csv')
 wsahara = read_data('wsahara.csv')
@@ -47,11 +48,15 @@ egypt_coord = read_data('eg7146.csv')
 finland_coord = read_data('fi10639.csv')
 honduras_coord = read_data('ho14473.csv')
 burma_coord = read_data('bm33708.csv')
+oman_coord = read_data('mu1979.csv')
+nicaragua_coord = read_data('nu3496.csv')
 
 e_array = egypt_coord.to_numpy()
 f_array = finland_coord.to_numpy()
 h_array = honduras_coord.to_numpy()
 # b_array = burma_coord.to_numpy()  # too many nodes
+o_array = oman_coord.to_numpy()
+n_array = nicaragua_coord.to_numpy()
 
 d_array = djibouti.to_numpy()
 u_array = usa.to_numpy()
