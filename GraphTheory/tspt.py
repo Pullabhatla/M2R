@@ -158,7 +158,7 @@ def children(node, n):
 
 def tspfull3(matrix):
     
-    lowerbound = tsp(matrix)[1]  #first lowerbound
+    upperbound = tsp(matrix)[1]  #first upperbound
     matrix_copy = matrix.copy()
     n = len(matrix)
     matrix = matrix + np.diag([float('inf')]*len(matrix))  # mat change
@@ -173,11 +173,11 @@ def tspfull3(matrix):
         currentnode = q.pop(0)
         for childnode in children(currentnode, n):
             q = sorted(q)
-            if childnode[0] <= lowerbound:
+            if childnode[0] <= upperbound:
                 q.append(childnode)
                 if childnode[1].level == n-1:
-                    lowerbound = childnode[0]
-                    q = [i for i in q if i[0]<=lowerbound]
+                    upperbound = childnode[0]
+                    q = [i for i in q if i[0]<=upperbound]
         if len(q)==1 and q[0][1].level==n-1:
             return q[0][0], q[0][1].path+[0]
    
