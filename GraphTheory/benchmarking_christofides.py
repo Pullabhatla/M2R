@@ -4,7 +4,7 @@ from GraphTheory.mst import MST
 import numpy as np
 
 
-def christofides1(matrix, over_ride=False, name='graph', own_kruskals=False):
+def christofides1(matrix, over_ride=False, own_kruskals=False):
     """Christofides algorithm."""
     if not isinstance(matrix, np.ndarray):
         raise TypeError(f'Expected an array got {type(matrix).__name__}')
