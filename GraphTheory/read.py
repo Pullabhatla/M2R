@@ -100,11 +100,13 @@ class Graph:
         """Edges and distances as a dictiionary."""
         return self.edgelabels
 
-    def adjacency(self):
+    def adjacency(self, undirected=False):
         """Cost adjacency matrix of the graph."""
         A = np.zeros([self.v, self.v])  # noqa N806
         for u, d in zip(self.links, self.distance):
             A[u[0]-1, u[1]-1] = d
+        if undirected:
+            A = A + A.T  # noqa N806
         return A
 
     def neighbors(self, c):
